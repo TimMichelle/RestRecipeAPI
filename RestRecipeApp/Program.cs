@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using RestRecipeApp.Db;
+using RestRecipeApp.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
 builder.Services.AddDbContext<RecipesContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DbConnection") ?? string.Empty));
 builder.Services.AddSwaggerGen();
