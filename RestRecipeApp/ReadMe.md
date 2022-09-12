@@ -1,6 +1,7 @@
 # Recipes App
 
 ### Run app
+Add your connection string to appsettings.Development.json
 
 First build docker image
 ```bash
