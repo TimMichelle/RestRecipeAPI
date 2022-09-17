@@ -1,6 +1,6 @@
 using RecipesApp.Domain;
 
-namespace RestRecipeApp.Controllers.Requests;
+namespace RestRecipeApp.Core.RequestDto.Recipe;
 
 public record CreateIngredientDto(
     int ProductId,

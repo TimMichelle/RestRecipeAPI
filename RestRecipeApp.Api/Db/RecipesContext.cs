@@ -22,12 +22,11 @@ public class RecipesContext : DbContext
             .Property(e => e.UnitOfMeasurement)
             .HasConversion(
                 v => v.ToString(),
-                v => (UnitOfMeasurement)Enum.Parse(typeof(UnitOfMeasurement), v));
+                v => (UnitOfMeasurement) Enum.Parse(typeof(UnitOfMeasurement), v));
     }
-    
+
     public DbSet<Recipe> Recipes { get; set; }
     public DbSet<Ingredient> Ingredients { get; set; }
     public DbSet<RecipeStep> RecipeSteps { get; set; }
     public DbSet<Product> Products { get; set; }
-
 }

@@ -1,6 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestRecipeApp", "RestRecipeApp\RestRecipeApp.csproj", "{34D19208-21AC-47E6-9C2D-7D82CF5FC908}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestRecipeApp.Api", "RestRecipeApp.Api\RestRecipeApp.Api.csproj", "{34D19208-21AC-47E6-9C2D-7D82CF5FC908}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestRecipeApp.Test", "RestRecipeApp.Test\RestRecipeApp.Test.csproj", "{3ECA0951-164D-4C30-A1B2-8F7DD166D48C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestRecipeApp.Core", "RestRecipeApp.Core\RestRecipeApp.Core.csproj", "{F1495DD4-C48A-4348-889F-374E5D3CA807}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +16,13 @@ Global
 		{34D19208-21AC-47E6-9C2D-7D82CF5FC908}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34D19208-21AC-47E6-9C2D-7D82CF5FC908}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34D19208-21AC-47E6-9C2D-7D82CF5FC908}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3ECA0951-164D-4C30-A1B2-8F7DD166D48C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3ECA0951-164D-4C30-A1B2-8F7DD166D48C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3ECA0951-164D-4C30-A1B2-8F7DD166D48C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3ECA0951-164D-4C30-A1B2-8F7DD166D48C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1495DD4-C48A-4348-889F-374E5D3CA807}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1495DD4-C48A-4348-889F-374E5D3CA807}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1495DD4-C48A-4348-889F-374E5D3CA807}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1495DD4-C48A-4348-889F-374E5D3CA807}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

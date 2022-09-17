@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using RecipesApp.Domain;
-using RestRecipeApp.Controllers.Requests;
+using RestRecipeApp.Core.RequestDto.Recipe;
 using RestRecipeApp.Repositories;
 
 namespace RestRecipeApp.Controllers
@@ -18,9 +18,13 @@ namespace RestRecipeApp.Controllers
 
         // GET: api/Recipe
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Recipe>>> GetRecipes()
+        public async Task<ActionResult> GetRecipes()
         {
-            return await _repository.GetRecipes();
+            var result =  await _repository.GetRecipes();
+            return result.Right<ActionResult>(response =>
+            {
+                return Ok(response);
+            }).Left(BadRequest);
         }
 
         // GET: api/Recipe/5
@@ -39,9 +43,9 @@ namespace RestRecipeApp.Controllers
 
         // PUT: api/Recipe/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutRecipe(int id, Recipe recipe)
-        {
+        // [HttpPut("{id}")]
+        // public async Task<IActionResult> PutRecipe(int id, Recipe recipe)
+        // {
             // if (id != recipe.RecipeId)
             // {
             //     return BadRequest();
@@ -66,7 +70,7 @@ namespace RestRecipeApp.Controllers
             // }
             //
             // return NoContent();
-        }
+        // }
 
         // POST: api/Recipe
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -90,9 +94,9 @@ namespace RestRecipeApp.Controllers
             return NoContent();
         }
 
-        private bool RecipeExists(int id)
-        {
-            // return (_repository.Recipes?.Any(e => e.RecipeId == id)).GetValueOrDefault();
-        }
+        // private bool RecipeExists(int id)
+        // {
+        //     // return (_repository.Recipes?.Any(e => e.RecipeId == id)).GetValueOrDefault();
+        // }
     }
 }

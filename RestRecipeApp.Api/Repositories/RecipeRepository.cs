@@ -1,6 +1,8 @@
+using System.Data.Common;
+using LanguageExt;
 using Microsoft.EntityFrameworkCore;
 using RecipesApp.Domain;
-using RestRecipeApp.Controllers.Requests;
+using RestRecipeApp.Core.RequestDto.Recipe;
 using RestRecipeApp.Db;
 
 namespace RestRecipeApp.Repositories;
@@ -17,9 +19,16 @@ public class RecipeRepository: IRecipeRepository
         return await _recipesContext.Recipes.FindAsync(id);
     }
 
-    public async Task<List<Recipe>> GetRecipes()
+    public async Task<Either<DbError, List<Recipe>>> GetRecipes()
     {
-        return await _recipesContext.Recipes.ToListAsync();
+        try
+        {
+            return await _recipesContext.Recipes.ToListAsync();
+        }
+        catch (Exception exception)
+        {
+            return new DbError("Could not retrieve recipes");
+        }
     }
 
     public async Task<bool> RemoveRecipe(int id)
