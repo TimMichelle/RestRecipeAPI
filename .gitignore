@@ -6,4 +6,5 @@ riderModule.iml
 
 .idea/
 
-RestRecipeApp/appsettings.Development.json
+/RestRecipeApp/appsettings.json
+/RestRecipeApp.Api/appsettings.Test.json
