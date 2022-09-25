@@ -24,77 +24,79 @@ public class RecipeControllerTests : IClassFixture<RestRecipeAppWebApplicationFa
     [Fact]
     public async Task Get_Recipes()
     {
-        // var recipeSteps = new RecipeStepTestBuilder().Generate(5);
-        // var products = new ProductTestBuilder().Generate(5);
-        //
-        //
-        // var savedRecipeSteps = new List<RecipeStep>();
-        //
-        // foreach (var recipeStep in recipeSteps)
-        // {
-        //     var newRecipeStep = await _context.RecipeSteps.AddAsync(recipeStep);
-        //     savedRecipeSteps.Add(new RecipeStep()
-        //     {
-        //         RecipeStepId = newRecipeStep.Entity.RecipeStepId,
-        //         Description = newRecipeStep.Entity.Description,
-        //         StepNumber = newRecipeStep.Entity.StepNumber
-        //     });
-        // }
-        // await _context.SaveChangesAsync();
-        //
-        //
-        // var savedProducts = new List<Product>();
-        //
-        // foreach (var product in products)
-        // {
-        //     var newProduct = await _context.Products.AddAsync(product);
-        //     savedProducts.Add(new Product()
-        //     {
-        //         ProductId = newProduct.Entity.ProductId,
-        //         Name = newProduct.Entity.Name,
-        //     });
-        // }
-        // await _context.SaveChangesAsync();
-        //
-        //
-        // var savedIngredients = new List<Ingredient>();
-        // foreach (var savedProduct in savedProducts)
-        // {
-        //     var newIngredient = new IngredientTestBuilder(savedProduct.ProductId).Generate();
-        //     var savedIngredient = await _context.Ingredients.AddAsync(newIngredient);
-        //     savedIngredients.Add(new Ingredient()
-        //     {
-        //         IngredientId = savedIngredient.Entity.IngredientId,
-        //         ProductId = savedIngredient.Entity.ProductId,
-        //         Amount = savedIngredient.Entity.Amount,
-        //         UnitOfMeasurement = savedIngredient.Entity.UnitOfMeasurement,
-        //     });
-        // }
-        // await _context.SaveChangesAsync();
-
+        // Create Recipe
         var savedRecipe = await _context.Recipes.AddAsync(new Recipe()
         {
             CookingTime = 10,
             Name = "Test test",
             TotalPersons = 4,
         });
-        
-        var savedIngredient = await _context.Ingredients.AddAsync(new Ingredient()
-        {
-            Amount = 10,
-            UnitOfMeasurement = UnitOfMeasurement.cl,
-            ProductId = 11,
-            
-        });
-
-
-
         await _context.SaveChangesAsync();
+        var recipeId = savedRecipe.Entity.RecipeId;
+        
+        // Create RecipeSteps
+        var savedRecipeSteps = new List<RecipeStep>();
+        
+        for (var i = 0; i <= 3; i++)
+        {
+            var recipeStep = new RecipeStepTestBuilder(recipeId).Generate();
+        
+            var newRecipeStep = await _context.RecipeSteps.AddAsync(recipeStep);
+            await _context.SaveChangesAsync();
+
+            savedRecipeSteps.Add(new RecipeStep()
+            {
+                RecipeStepId = newRecipeStep.Entity.RecipeStepId,
+                Description = newRecipeStep.Entity.Description,
+                StepNumber = newRecipeStep.Entity.StepNumber,
+                RecipeId = savedRecipe.Entity.RecipeId,
+            });
+        }
+        await _context.SaveChangesAsync();
+        
+        // Create Products
+        var savedProducts = new List<Product>();
+        
+        for (var i = 0; i <= 5; i++)
+        {
+            var product =  new ProductTestBuilder().Generate();
+            var newProduct = await _context.Products.AddAsync(product);
+            await _context.SaveChangesAsync();
+
+            savedProducts.Add(new Product()
+            {
+                ProductId = newProduct.Entity.ProductId,
+                Name = newProduct.Entity.Name,
+            });
+        }
+        
+        // Create Ingredients
+        var savedIngredients = new List<Ingredient>();
+        foreach (var savedProduct in savedProducts)
+        {
+            var newIngredient = new IngredientTestBuilder(savedProduct.ProductId, recipeId).Generate();
+            var savedIngredient = await _context.Ingredients.AddAsync(newIngredient);
+            await _context.SaveChangesAsync();
+
+            savedIngredients.Add(new Ingredient()
+            {
+                Amount = savedIngredient.Entity.Amount,
+                UnitOfMeasurement = savedIngredient.Entity.UnitOfMeasurement,
+                ProductId = savedProduct.ProductId,
+                RecipeId = recipeId
+            });
+        }
+
         var response = await _httpClient.GetAsync("api/Recipe");
         response.EnsureSuccessStatusCode();
         var contentOrError = await ResponseObjectHelper.GetResponseObject<List<Recipe>>(response);
         contentOrError
-            .Some((content) => Assert.Equal(new List<Recipe>(), content))
+            .Some((content) =>
+            {
+                Assert.Equal(content[0].Name, savedRecipe.Entity.Name);
+                Assert.Equal(6, content[0].Ingredients.Count);
+                Assert.Equal(4, content[0].Steps.Count);
+            })
             .None(() => Console.Write("Something bad happened"));
     }
 }
