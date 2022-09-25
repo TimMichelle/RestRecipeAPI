@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +12,8 @@ public class RestRecipeAppWebApplicationFactory : WebApplicationFactory<Program>
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.ConfigureServices(services =>
+        builder.UseEnvironment("Development");
+        builder.ConfigureTestServices(services =>
         {
             var descriptor = services.SingleOrDefault(
                 d => d.ServiceType ==
@@ -19,21 +21,17 @@ public class RestRecipeAppWebApplicationFactory : WebApplicationFactory<Program>
 
             services.Remove(descriptor);
 
+            var projectDir = Directory.GetCurrentDirectory();
+            var configPath = Path.Combine(projectDir, "appsettings.json");
             var config = new ConfigurationBuilder()
-                .SetBasePath(AppContext.BaseDirectory)
-                .AddJsonFile("appsettings.Test.json", false, true)
+                .AddJsonFile(configPath)
                 .Build();
 
+            
             services.AddDbContext<RecipesContext>(options =>
             {
                 options.UseNpgsql(config.GetConnectionString("DbConnection") ?? throw new InvalidOperationException());
             });
         });
     }
-    
-    public void Dispose()
-    {
-        
-    }
-
 }

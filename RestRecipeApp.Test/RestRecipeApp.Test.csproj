@@ -20,4 +20,11 @@
         <ProjectReference Include="..\RestRecipeAPI.TestFixtures\RestRecipeAPI.TestFixtures.csproj" />
         <ProjectReference Include="..\RestRecipeApp.Api\RestRecipeApp.Api.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+        <None Update="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Update="appsettings.Test.json" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
 </Project>
