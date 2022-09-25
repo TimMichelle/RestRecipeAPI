@@ -29,7 +29,10 @@ public class RestRecipeAppWebApplicationFactory : WebApplicationFactory<Program>
                 options.UseNpgsql(config.GetConnectionString("DbConnection") ?? throw new InvalidOperationException());
             });
 
+            /*var serviceProvider = services.BuildServiceProvider();
+            using var scope = serviceProvider.CreateScope();
+            var db  = scope.ServiceProvider.GetRequiredService<RecipesContext>();
+            db.Database.EnsureCreated();*/
         });
     }
-
 }

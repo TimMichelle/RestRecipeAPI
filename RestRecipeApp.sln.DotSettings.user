@@ -14,7 +14,12 @@
     &lt;TestId&gt;xUnit::3ECA0951-164D-4C30-A1B2-8F7DD166D48C::net6.0::Tests.RestRecipeApp.E2E.Tests.RecipeControllerTests&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5e185ce5_002D9a70_002D4747_002D938e_002D01ecdd3cb783/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="RecipeControllerTests #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5e185ce5_002D9a70_002D4747_002D938e_002D01ecdd3cb783/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="RecipeControllerTests #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::3ECA0951-164D-4C30-A1B2-8F7DD166D48C::net6.0::Tests.RestRecipeApp.E2E.Tests.RecipeControllerTests&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=869190cb_002D8732_002D48a7_002Dbeb4_002D88fda4dd5e76/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="RecipeControllerTests #5" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;xUnit::3ECA0951-164D-4C30-A1B2-8F7DD166D48C::net6.0::Tests.RestRecipeApp.E2E.Tests.RecipeControllerTests&lt;/TestId&gt;
   &lt;/TestAncestor&gt;

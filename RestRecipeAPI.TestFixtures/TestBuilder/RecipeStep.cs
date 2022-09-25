@@ -5,11 +5,11 @@ namespace RestRecipeAPI.TestFixtures.TestBuilder;
 
 public class RecipeStepTestBuilder : Faker<RecipeStep>
 {
-    public RecipeStepTestBuilder(int stepNumber)
+    public RecipeStepTestBuilder()
     {
         CustomInstantiator(f => new RecipeStep()
         {
-            StepNumber = stepNumber,
+            StepNumber = f.Random.Int(1,6),
             Description = f.Lorem.Sentences()
         });
     }
