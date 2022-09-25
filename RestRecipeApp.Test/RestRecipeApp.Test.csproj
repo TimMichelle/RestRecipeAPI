@@ -20,5 +20,4 @@
         <ProjectReference Include="..\RestRecipeAPI.TestFixtures\RestRecipeAPI.TestFixtures.csproj" />
         <ProjectReference Include="..\RestRecipeApp.Api\RestRecipeApp.Api.csproj" />
     </ItemGroup>
-
 </Project>

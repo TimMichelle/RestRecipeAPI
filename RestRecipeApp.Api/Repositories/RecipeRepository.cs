@@ -23,7 +23,10 @@ public class RecipeRepository: IRecipeRepository
     {
         try
         {
-            return await _recipesContext.Recipes.ToListAsync();
+            return await _recipesContext.Recipes.
+                Include(r => r.Steps)
+                .Include(r => r.Ingredients)
+                .ToListAsync();
         }
         catch (Exception exception)
         {

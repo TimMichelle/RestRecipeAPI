@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using RecipesApp.Domain;
 using RestRecipeAPI.TestFixtures;
@@ -7,7 +8,7 @@ using Xunit;
 
 namespace Tests.RestRecipeApp.E2E.Tests;
 
-public class RecipeControllerTests : IClassFixture<RestRecipeAppWebApplicationFactory>
+public class RecipeControllerTests : IClassFixture<RestRecipeAppWebApplicationFactory>, IDisposable
 {
     private readonly RestRecipeAppWebApplicationFactory _factory;
     private readonly HttpClient _httpClient;
@@ -98,5 +99,13 @@ public class RecipeControllerTests : IClassFixture<RestRecipeAppWebApplicationFa
                 Assert.Equal(4, content[0].Steps.Count);
             })
             .None(() => Console.Write("Something bad happened"));
+    }
+
+    public void Dispose()
+    {
+        _context.Database.ExecuteSqlRaw("truncate table \"Ingredients\" cascade; truncate table \"Products\" cascade;truncate table \"RecipeSteps\" cascade;truncate table \"Recipes\" cascade;");
+        _factory.Dispose();
+        _httpClient.Dispose();
+        _context.Dispose();
     }
 }
