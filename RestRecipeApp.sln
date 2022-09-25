@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestRecipeApp.Test", "RestR
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestRecipeApp.Core", "RestRecipeApp.Core\RestRecipeApp.Core.csproj", "{F1495DD4-C48A-4348-889F-374E5D3CA807}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestRecipeAPI.TestFixtures", "RestRecipeAPI.TestFixtures\RestRecipeAPI.TestFixtures.csproj", "{6517F609-08D6-438D-96DD-CCD4D3D5ADCA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{F1495DD4-C48A-4348-889F-374E5D3CA807}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1495DD4-C48A-4348-889F-374E5D3CA807}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1495DD4-C48A-4348-889F-374E5D3CA807}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6517F609-08D6-438D-96DD-CCD4D3D5ADCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6517F609-08D6-438D-96DD-CCD4D3D5ADCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6517F609-08D6-438D-96DD-CCD4D3D5ADCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6517F609-08D6-438D-96DD-CCD4D3D5ADCA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

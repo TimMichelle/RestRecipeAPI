@@ -1,9 +1,9 @@
 using LanguageExt;
 using Newtonsoft.Json;
 
-namespace Tests.RestRecipeApp.E2E.Tests;
+namespace RestRecipeAPI.TestFixtures;
 
-public class GetResponseObjectHelper
+public class ResponseObjectHelper
 {
     public static async Task<Option<T>> GetResponseObject<T>(HttpResponseMessage response)
     {
