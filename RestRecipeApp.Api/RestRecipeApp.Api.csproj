@@ -35,8 +35,4 @@
         <InternalsVisibleTo Include="RestRecipeApp.Test" />
     </ItemGroup>
 
-    <ItemGroup>
-      <None Include="appsettings.Test.json" />
-    </ItemGroup>
-
 </Project>
