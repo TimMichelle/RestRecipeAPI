@@ -79,7 +79,8 @@ namespace RestRecipeApp.Controllers
         {
             var createdRecipe = await _repository.CreateRecipe(recipe);
 
-            return CreatedAtAction("GetRecipe", new { id = createdRecipe.RecipeId }, recipe);
+            var test =  CreatedAtAction("GetRecipe", new { id = createdRecipe.RecipeId }, recipe);
+            return test;
         }
 
         // DELETE: api/Recipe/5
@@ -96,7 +97,7 @@ namespace RestRecipeApp.Controllers
 
         // private bool RecipeExists(int id)
         // {
-        //     // return (_repository.Recipes?.Any(e => e.RecipeId == id)).GetValueOrDefault();
+        //     return (_repository.Recipes?.Any(e => e.RecipeId == id)).GetValueOrDefault();
         // }
     }
 }

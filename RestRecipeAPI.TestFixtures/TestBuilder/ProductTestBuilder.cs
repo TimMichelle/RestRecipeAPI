@@ -3,7 +3,7 @@ using RecipesApp.Domain;
 
 namespace RestRecipeAPI.TestFixtures.TestBuilder;
 
-public class ProductTestBuilder: Faker<Product>
+public sealed class ProductTestBuilder: Faker<Product>
 {
     public ProductTestBuilder()
     {

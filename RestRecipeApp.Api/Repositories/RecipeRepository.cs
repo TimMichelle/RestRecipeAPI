@@ -49,7 +49,6 @@ public class RecipeRepository: IRecipeRepository
 
     public async Task<Recipe> CreateRecipe(CreateRecipeDto recipe)
     {
-
         var newlyCreatedRecipe = new Recipe()
         {
             Name = recipe.Name,

@@ -1,8 +1,11 @@
+using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using RecipesApp.Domain;
 using RestRecipeAPI.TestFixtures;
 using RestRecipeAPI.TestFixtures.TestBuilder;
+using RestRecipeApp.Core.RequestDto.Recipe;
 using RestRecipeApp.Db;
 using Xunit;
 
@@ -99,6 +102,26 @@ public class RecipeControllerTests : IClassFixture<RestRecipeAppWebApplicationFa
                 Assert.Equal(4, content[0].Steps.Count);
             })
             .None(() => Console.Write("Something bad happened"));
+    }
+
+    // Todo fix creation of recipe
+    [Fact]
+    public async Task Create_Recipe()
+    {
+        var recipeDto = new CreateRecipeDtoTestBuilder().Generate();
+        var stringifiedContent = JsonConvert.SerializeObject(recipeDto);
+        var requestObject = new StringContent(stringifiedContent,  Encoding.UTF8, "application/json");
+        var response = await _httpClient.PostAsync("api/Recipe", requestObject);
+        response.EnsureSuccessStatusCode();
+
+        var contentOrError = await ResponseObjectHelper.GetResponseObject<Recipe>(response);
+        contentOrError.Some(content =>
+        {
+            Assert.Equal(content.Name, recipeDto.Name);
+            Assert.Equal(content.Ingredients.Count, recipeDto.Ingredients.Count);
+            Assert.Equal(content.Steps.Count, recipeDto.Steps.Count);
+        }).None(() => Console.Write("Something bad happened"));
+
     }
 
     public void Dispose()
