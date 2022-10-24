@@ -1,5 +1,7 @@
 using System.Data.Common;
 using LanguageExt;
+using LanguageExt.Common;
+using Microsoft.CodeAnalysis.Text;
 using Microsoft.EntityFrameworkCore;
 using RecipesApp.Domain;
 using RestRecipeApp.Core.RequestDto.Recipe;
@@ -47,7 +49,7 @@ public class RecipeRepository: IRecipeRepository
         return true;
     }
 
-    public async Task<Recipe> CreateRecipe(CreateRecipeDto recipe)
+    public async Task<Either<DbError, Recipe>> CreateRecipe(CreateRecipeDto recipe)
     {
         var newlyCreatedRecipe = new Recipe()
         {
@@ -58,7 +60,10 @@ public class RecipeRepository: IRecipeRepository
             {
                 UnitOfMeasurement = ingredient.UnitOfMeasurement,
                 Amount = ingredient.Amount,
-                ProductId = ingredient.ProductId
+                Product = new Product()
+                {
+                    Name = ingredient.Product.Name
+                }
             }).ToList(),
             Steps = recipe.Steps.Select((step) => new RecipeStep()
             {
@@ -66,9 +71,17 @@ public class RecipeRepository: IRecipeRepository
                 StepNumber = step.StepNumber
             }).ToList()
         };
-        var savedRecipe = await _recipesContext.Recipes.AddAsync(newlyCreatedRecipe);
-        await _recipesContext.SaveChangesAsync();
-        return savedRecipe.Entity;
+
+        try
+        {
+            var savedRecipe = await _recipesContext.Recipes.AddAsync(newlyCreatedRecipe);
+            await _recipesContext.SaveChangesAsync();
+            return savedRecipe.Entity;
+        }
+        catch (DbUpdateException e)
+        {
+            return new DbError($"Could not create recipe: {e.Message}");
+        }
     }
 
     public Task<Recipe> UpdateRecipe(int id)

@@ -78,9 +78,9 @@ namespace RestRecipeApp.Controllers
         public async Task<ActionResult<Recipe>> PostRecipe(CreateRecipeDto recipe)
         {
             var createdRecipe = await _repository.CreateRecipe(recipe);
-
-            var test =  CreatedAtAction("GetRecipe", new { id = createdRecipe.RecipeId }, recipe);
-            return test;
+            return createdRecipe
+                .Right<ActionResult>(createdRecipe => CreatedAtAction("GetRecipe", new { id = createdRecipe.RecipeId }, recipe))
+                .Left(error => BadRequest(error.Message));
         }
 
         // DELETE: api/Recipe/5

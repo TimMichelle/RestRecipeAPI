@@ -123,6 +123,26 @@ public class RecipeControllerTests : IClassFixture<RestRecipeAppWebApplicationFa
         }).None(() => Console.Write("Something bad happened"));
 
     }
+    
+    [Fact]
+    public async Task Create_recipe_without_ingredients()
+    {
+        var ingredientsList = new List<CreateIngredientDto>();
+        var recipeDto = new CreateRecipeDtoTestBuilder(ingredientsList).Generate();
+        var stringifiedContent = JsonConvert.SerializeObject(recipeDto);
+        var requestObject = new StringContent(stringifiedContent,  Encoding.UTF8, "application/json");
+        var response = await _httpClient.PostAsync("api/Recipe", requestObject);
+        response.EnsureSuccessStatusCode();
+
+        var contentOrError = await ResponseObjectHelper.GetResponseObject<Recipe>(response);
+        contentOrError.Some(content =>
+        {
+            Assert.Equal(content.Name, recipeDto.Name);
+            Assert.Empty(content.Ingredients);
+            Assert.Equal(content.Steps.Count, recipeDto.Steps.Count);
+        }).None(() => Console.Write("Something bad happened"));
+
+    }
 
     public void Dispose()
     {

@@ -6,10 +6,10 @@ namespace RestRecipeAPI.TestFixtures.TestBuilder;
 
 public sealed class CreateIngredientDtoTestBuilder : Faker<CreateIngredientDto>
 {
-    public CreateIngredientDtoTestBuilder(int? productId = null)
+    public CreateIngredientDtoTestBuilder()
     {
         CustomInstantiator(f => new CreateIngredientDto(
-            productId ?? 1, f.Random.Float(1, 100),
+            new CreateProductDtoTestBuilder().Generate(), f.Random.Float(1, 100),
             f.PickRandom<UnitOfMeasurement>()));
     }
     
