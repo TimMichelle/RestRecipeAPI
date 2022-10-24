@@ -104,7 +104,6 @@ public class RecipeControllerTests : IClassFixture<RestRecipeAppWebApplicationFa
             .None(() => Console.Write("Something bad happened"));
     }
 
-    // Todo fix creation of recipe
     [Fact]
     public async Task Create_Recipe()
     {
@@ -121,6 +120,41 @@ public class RecipeControllerTests : IClassFixture<RestRecipeAppWebApplicationFa
             Assert.Equal(content.Ingredients.Count, recipeDto.Ingredients.Count);
             Assert.Equal(content.Steps.Count, recipeDto.Steps.Count);
         }).None(() => Console.Write("Something bad happened"));
+
+    }
+    
+    [Fact]
+    public async Task Create_recipe_without_ingredients()
+    {
+        var ingredientsList = new List<CreateIngredientDto>();
+        var recipeDto = new CreateRecipeDtoTestBuilder(ingredientsList).Generate();
+        var stringifiedContent = JsonConvert.SerializeObject(recipeDto);
+        var requestObject = new StringContent(stringifiedContent,  Encoding.UTF8, "application/json");
+        var response = await _httpClient.PostAsync("api/Recipe", requestObject);
+        response.EnsureSuccessStatusCode();
+
+        var contentOrError = await ResponseObjectHelper.GetResponseObject<Recipe>(response);
+        contentOrError.Some(content =>
+        {
+            Assert.Equal(content.Name, recipeDto.Name);
+            Assert.Empty(content.Ingredients);
+            Assert.Equal(content.Steps.Count, recipeDto.Steps.Count);
+        }).None(() => Console.Write("Something bad happened"));
+    }
+
+    [Theory]
+    [InlineData(null, null, 10)]
+    [InlineData(null, null, null)]
+    [InlineData("Updated Recipe", null, null)]
+    [InlineData("Updated Recipe", 45, null)]
+    public async Task Update_Recipe(string? name, int? cookingTime, int? totalPersons)
+    {
+        var alreadyCreatedRecipe = new RecipeTestBuilder().Generate();
+        var savedRecipeEntity = await _context.Recipes.AddAsync(alreadyCreatedRecipe);
+        await _context.SaveChangesAsync();
+        var savedRecipe =  savedRecipeEntity.Entity;
+        var requestObject = new UpdatedRecipeDto(savedRecipe.RecipeId, name, cookingTime, totalPersons);
+        // Todo fix update test
 
     }
 

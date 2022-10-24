@@ -9,6 +9,6 @@ public interface IRecipeRepository
     public Task<Recipe?> GetRecipeById(int id);
     public Task<Either<DbError, List<Recipe>>> GetRecipes();
     public Task<bool> RemoveRecipe(int id);
-    public Task<Recipe> CreateRecipe(CreateRecipeDto recipe);
-    public Task<Recipe> UpdateRecipe(int id);
+    public Task<Either<DbError, Recipe>> CreateRecipe(CreateRecipeDto recipe);
+    public Task<Either<DbError, Recipe>> UpdateRecipe(UpdatedRecipeDto updatedRecipeDto);
 }

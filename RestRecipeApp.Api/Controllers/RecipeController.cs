@@ -41,36 +41,19 @@ namespace RestRecipeApp.Controllers
             return recipe;
         }
 
-        // PUT: api/Recipe/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        // [HttpPut("{id}")]
-        // public async Task<IActionResult> PutRecipe(int id, Recipe recipe)
-        // {
-            // if (id != recipe.RecipeId)
-            // {
-            //     return BadRequest();
-            // }
-            //
-            // _repository.Entry(recipe).State = EntityState.Modified;
-            //
-            // try
-            // {
-            //     await _repository.SaveChangesAsync();
-            // }
-            // catch (DbUpdateConcurrencyException)
-            // {
-            //     if (!RecipeExists(id))
-            //     {
-            //         return NotFound();
-            //     }
-            //     else
-            //     {
-            //         throw;
-            //     }
-            // }
-            //
-            // return NoContent();
-        // }
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PutRecipe(int id, UpdatedRecipeDto updatedRecipeDto)
+        {
+            if (id != updatedRecipeDto.RecipeId)
+            {
+                return BadRequest();
+            }
+
+            var updatedRecipe = await _repository.UpdateRecipe(updatedRecipeDto);
+            return updatedRecipe.Right<ActionResult>((recipe) => CreatedAtAction("GetRecipe", new { id = recipe.RecipeId }, recipe))
+                .Left(error => BadRequest(error.Message));
+        }
+    
 
         // POST: api/Recipe
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -78,9 +61,9 @@ namespace RestRecipeApp.Controllers
         public async Task<ActionResult<Recipe>> PostRecipe(CreateRecipeDto recipe)
         {
             var createdRecipe = await _repository.CreateRecipe(recipe);
-
-            var test =  CreatedAtAction("GetRecipe", new { id = createdRecipe.RecipeId }, recipe);
-            return test;
+            return createdRecipe
+                .Right<ActionResult>(createdRecipe => CreatedAtAction("GetRecipe", new { id = createdRecipe.RecipeId }, recipe))
+                .Left(error => BadRequest(error.Message));
         }
 
         // DELETE: api/Recipe/5
@@ -94,10 +77,5 @@ namespace RestRecipeApp.Controllers
             }
             return NoContent();
         }
-
-        // private bool RecipeExists(int id)
-        // {
-        //     return (_repository.Recipes?.Any(e => e.RecipeId == id)).GetValueOrDefault();
-        // }
     }
 }
