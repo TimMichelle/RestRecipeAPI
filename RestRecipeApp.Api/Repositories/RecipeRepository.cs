@@ -23,6 +23,7 @@ public class RecipeRepository: IRecipeRepository
 
     public async Task<Either<DbError, List<Recipe>>> GetRecipes()
     {
+        // Todo add pagination
         try
         {
             return await _recipesContext.Recipes.
@@ -30,7 +31,7 @@ public class RecipeRepository: IRecipeRepository
                 .Include(r => r.Ingredients)
                 .ToListAsync();
         }
-        catch (Exception exception)
+        catch (DbException exception)
         {
             return new DbError("Could not retrieve recipes");
         }
@@ -80,12 +81,36 @@ public class RecipeRepository: IRecipeRepository
         }
         catch (DbUpdateException e)
         {
-            return new DbError($"Could not create recipe: {e.Message}");
+            return new DbError($"Could not create recipeDto: {e.Message}");
         }
     }
 
-    public Task<Recipe> UpdateRecipe(int id)
+    public async Task<Either<DbError, Recipe>> UpdateRecipe(UpdatedRecipeDto updatedRecipe)
     {
-        throw new NotImplementedException();
+        var currentRecipe = await _recipesContext.Recipes
+            .Include(r => r.Ingredients)
+            .Include(r => r.Steps).FirstOrDefaultAsync(foundRecipe => foundRecipe.RecipeId == updatedRecipe.RecipeId);
+
+        if (currentRecipe == null)
+        {
+            return new DbError($"Could not find recipe with id: {updatedRecipe.RecipeId}");
+        }
+
+        currentRecipe.Name = !string.IsNullOrEmpty(updatedRecipe.Name) ? updatedRecipe.Name : currentRecipe.Name;
+        currentRecipe.CookingTime = updatedRecipe.CookingTime ?? currentRecipe.CookingTime;
+        currentRecipe.TotalPersons = updatedRecipe.TotalPersons ?? currentRecipe.TotalPersons;
+        
+        _recipesContext.Entry(currentRecipe).State = EntityState.Modified;
+            
+        try
+        {
+            await _recipesContext.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException error)
+        {
+            return new DbError($"Could not save updates to recipe: {updatedRecipe.RecipeId}");
+        }
+
+        return currentRecipe;
     }
 }

@@ -104,7 +104,6 @@ public class RecipeControllerTests : IClassFixture<RestRecipeAppWebApplicationFa
             .None(() => Console.Write("Something bad happened"));
     }
 
-    // Todo fix creation of recipe
     [Fact]
     public async Task Create_Recipe()
     {
@@ -141,6 +140,21 @@ public class RecipeControllerTests : IClassFixture<RestRecipeAppWebApplicationFa
             Assert.Empty(content.Ingredients);
             Assert.Equal(content.Steps.Count, recipeDto.Steps.Count);
         }).None(() => Console.Write("Something bad happened"));
+    }
+
+    [Theory]
+    [InlineData(null, null, 10)]
+    [InlineData(null, null, null)]
+    [InlineData("Updated Recipe", null, null)]
+    [InlineData("Updated Recipe", 45, null)]
+    public async Task Update_Recipe(string? name, int? cookingTime, int? totalPersons)
+    {
+        var alreadyCreatedRecipe = new RecipeTestBuilder().Generate();
+        var savedRecipeEntity = await _context.Recipes.AddAsync(alreadyCreatedRecipe);
+        await _context.SaveChangesAsync();
+        var savedRecipe =  savedRecipeEntity.Entity;
+        var requestObject = new UpdatedRecipeDto(savedRecipe.RecipeId, name, cookingTime, totalPersons);
+        // Todo fix update test
 
     }
 
