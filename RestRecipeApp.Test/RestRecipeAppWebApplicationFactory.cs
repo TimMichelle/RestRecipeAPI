@@ -27,11 +27,8 @@ public class RestRecipeAppWebApplicationFactory : WebApplicationFactory<Program>
                 .AddJsonFile(configPath)
                 .Build();
 
-            
-            services.AddDbContext<RecipesContext>(options =>
-            {
-                options.UseNpgsql(config.GetConnectionString("DbConnection") ?? throw new InvalidOperationException());
-            });
+
+            services.AddRepositories(config);
         });
     }
 }

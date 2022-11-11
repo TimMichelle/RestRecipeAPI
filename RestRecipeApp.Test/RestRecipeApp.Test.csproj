@@ -4,9 +4,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-
         <IsPackable>false</IsPackable>
-
         <RootNamespace>Tests.RestRecipeApp</RootNamespace>
     </PropertyGroup>
 
@@ -17,14 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\RestRecipeAPI.TestFixtures\RestRecipeAPI.TestFixtures.csproj" />
+        <ProjectReference Include="..\RestRecipeApp.TestFixtures\RestRecipeApp.TestFixtures.csproj" />
         <ProjectReference Include="..\RestRecipeApp.Api\RestRecipeApp.Api.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Update="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
-    </ItemGroup>
-    <ItemGroup>
-        <None Update="appsettings.Test.json" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
 </Project>

@@ -12,6 +12,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 app.MapGet("/", () => "Hello World!");
 app.MapControllers();
 app.Run();

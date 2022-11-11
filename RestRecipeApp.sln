@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestRecipeApp.Test", "RestR
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestRecipeApp.Core", "RestRecipeApp.Core\RestRecipeApp.Core.csproj", "{F1495DD4-C48A-4348-889F-374E5D3CA807}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestRecipeAPI.TestFixtures", "RestRecipeAPI.TestFixtures\RestRecipeAPI.TestFixtures.csproj", "{6517F609-08D6-438D-96DD-CCD4D3D5ADCA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestRecipeApp.TestFixtures", "RestRecipeApp.TestFixtures\RestRecipeApp.TestFixtures.csproj", "{6517F609-08D6-438D-96DD-CCD4D3D5ADCA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestRecipeApp.DbMigrator", "RestRecipeApp.DbMigrator\RestRecipeApp.DbMigrator.csproj", "{56C51E94-07D5-43EA-8FC6-A41604534B7B}"
 EndProject
