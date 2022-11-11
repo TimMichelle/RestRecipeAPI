@@ -3,9 +3,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using RestRecipeApp.Persistence;
-
 namespace Tests.RestRecipeApp;
 
 public class RestRecipeAppWebApplicationFactory : WebApplicationFactory<Program>
