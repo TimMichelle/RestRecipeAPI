@@ -15,14 +15,14 @@ public class RecipeControllerTests : IClassFixture<RestRecipeAppWebApplicationFa
 {
     private readonly RestRecipeAppWebApplicationFactory _factory;
     private readonly HttpClient _httpClient;
-    private readonly RecipesContext _context;
+    private readonly RecipesDbContext _context;
 
     public RecipeControllerTests(RestRecipeAppWebApplicationFactory factory)
     {
         _factory = factory;
         _httpClient = _factory.CreateClient();
         var scope = factory.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
-        _context = scope.ServiceProvider.GetRequiredService<RecipesContext>();
+        _context = scope.ServiceProvider.GetRequiredService<RecipesDbContext>();
     }
 
     [Fact]

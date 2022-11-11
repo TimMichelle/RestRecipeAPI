@@ -9,7 +9,7 @@ public static class ServiceCollectionPersistence
 {
     public static IServiceCollection AddRepositories(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<RecipesContext>(options =>
+        services.AddDbContext<RecipesDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("DbConnection") ?? string.Empty, 
                 b => b.MigrationsAssembly("RestRecipeApp.DbMigrator")));
 

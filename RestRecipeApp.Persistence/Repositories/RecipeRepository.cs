@@ -8,8 +8,8 @@ namespace RestRecipeApp.Persistence.Repositories;
 
 public class RecipeRepository: IRecipeRepository
 {
-    private readonly RecipesContext _recipesContext;
-    public RecipeRepository(RecipesContext recipesContext)
+    private readonly RecipesDbContext _recipesContext;
+    public RecipeRepository(RecipesDbContext recipesContext)
     {
         _recipesContext = recipesContext;
     }

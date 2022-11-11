@@ -15,7 +15,7 @@ public class RestRecipeAppWebApplicationFactory : WebApplicationFactory<Program>
         {
             var descriptor = services.SingleOrDefault(
                 d => d.ServiceType ==
-                     typeof(DbContextOptions<RecipesContext>));
+                     typeof(DbContextOptions<RecipesDbContext>));
 
             services.Remove(descriptor);
 

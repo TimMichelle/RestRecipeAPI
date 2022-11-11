@@ -4,9 +4,9 @@ using RestRecipeApp.Persistence.Models;
 
 namespace RestRecipeApp.Persistence;
 
-public class RecipesContext : DbContext
+public class RecipesDbContext : DbContext
 {
-    public RecipesContext(DbContextOptions<RecipesContext> options) : base(options)
+    public RecipesDbContext(DbContextOptions<RecipesDbContext> options) : base(options)
     {
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)

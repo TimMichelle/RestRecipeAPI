@@ -9,9 +9,9 @@ namespace RestRecipeApp.Controllers
     [ApiController]
     public class RecipeStepController : ControllerBase
     {
-        private readonly RecipesContext _context;
+        private readonly RecipesDbContext _context;
 
-        public RecipeStepController(RecipesContext context)
+        public RecipeStepController(RecipesDbContext context)
         {
             _context = context;
         }

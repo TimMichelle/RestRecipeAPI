@@ -9,9 +9,9 @@ namespace RestRecipeApp.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly RecipesContext _context;
+        private readonly RecipesDbContext _context;
 
-        public ProductController(RecipesContext context)
+        public ProductController(RecipesDbContext context)
         {
             _context = context;
         }
