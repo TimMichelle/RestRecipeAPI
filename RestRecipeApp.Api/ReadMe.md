@@ -14,9 +14,9 @@ Run app on localhost:8080
 
 ### Migrations
 ```bash
-dotnet ef migrations add Add<Name>
+ dotnet ef migrations add <MigrationName>  --verbose --project RestRecipeApp.Persistence --startup-project RestRecipeApp.Api
 ```
 
 ```bash
-dotnet ef database update
+dotnet ef database update --verbose --project RestRecipeApp.Persistence --startup-project RestRecipeApp.Api
 ```

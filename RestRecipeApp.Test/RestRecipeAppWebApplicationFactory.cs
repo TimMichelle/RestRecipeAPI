@@ -13,11 +13,11 @@ public class RestRecipeAppWebApplicationFactory : WebApplicationFactory<Program>
         builder.UseEnvironment("Development");
         builder.ConfigureTestServices(services =>
         {
-            var descriptor = services.SingleOrDefault(
-                d => d.ServiceType ==
-                     typeof(DbContextOptions<RecipesDbContext>));
-
-            services.Remove(descriptor);
+            // var descriptor = services.SingleOrDefault(
+            //     d => d.ServiceType ==
+            //          typeof(DbContextOptions<RecipesDbContext>));
+            //
+            // services.Remove(descriptor);
 
             var projectDir = Directory.GetCurrentDirectory();
             var configPath = Path.Combine(projectDir, "appsettings.json");

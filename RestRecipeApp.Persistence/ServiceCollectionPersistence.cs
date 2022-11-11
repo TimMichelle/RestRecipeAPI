@@ -11,7 +11,7 @@ public static class ServiceCollectionPersistence
     {
         services.AddDbContext<RecipesDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("DbConnection") ?? string.Empty, 
-                b => b.MigrationsAssembly("RestRecipeApp.DbMigrator")));
+                b => b.MigrationsAssembly("RestRecipeApp.Persistence")));
 
         services.AddScoped<IRecipeRepository, RecipeRepository>();
         return services;
