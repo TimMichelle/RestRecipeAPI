@@ -1,12 +1,8 @@
-using Microsoft.EntityFrameworkCore;
-using RestRecipeApp.Db;
-using RestRecipeApp.Repositories;
+using RestRecipeApp.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<RecipesContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DbConnection") ?? string.Empty));
 
-builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
+builder.Services.AddRepositories(builder.Configuration);
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers().AddNewtonsoftJson();
 var app = builder.Build();

@@ -1,8 +1,8 @@
 using LanguageExt;
-using RecipesApp.Domain;
 using RestRecipeApp.Core.RequestDto.Recipe;
+using RestRecipeApp.Persistence.Models;
 
-namespace RestRecipeApp.Repositories;
+namespace RestRecipeApp.Persistence.Repositories;
 
 public interface IRecipeRepository
 {

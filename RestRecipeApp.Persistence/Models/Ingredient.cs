@@ -1,4 +1,6 @@
-namespace RecipesApp.Domain;
+using RecipesApp.Domain;
+
+namespace RestRecipeApp.Persistence.Models;
 
 public class Ingredient
 {

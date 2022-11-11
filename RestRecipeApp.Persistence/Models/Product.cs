@@ -1,4 +1,4 @@
-namespace RecipesApp.Domain;
+namespace RestRecipeApp.Persistence.Models;
 
 public class Product
 {

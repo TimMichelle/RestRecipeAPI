@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using RecipesApp.Domain;
+using RestRecipeApp.Persistence.Models;
 
-namespace RestRecipeApp.Db;
+namespace RestRecipeApp.Persistence;
 
 public class RecipesContext : DbContext
 {

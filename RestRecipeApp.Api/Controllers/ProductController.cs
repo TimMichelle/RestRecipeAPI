@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using RecipesApp.Domain;
-using RestRecipeApp.Db;
+using RestRecipeApp.Persistence;
+using RestRecipeApp.Persistence.Models;
 
 namespace RestRecipeApp.Controllers
 {

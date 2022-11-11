@@ -2,11 +2,11 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using RecipesApp.Domain;
 using RestRecipeAPI.TestFixtures;
 using RestRecipeAPI.TestFixtures.TestBuilder;
 using RestRecipeApp.Core.RequestDto.Recipe;
-using RestRecipeApp.Db;
+using RestRecipeApp.Persistence;
+using RestRecipeApp.Persistence.Models;
 using Xunit;
 
 namespace Tests.RestRecipeApp.E2E.Tests;
@@ -153,9 +153,20 @@ public class RecipeControllerTests : IClassFixture<RestRecipeAppWebApplicationFa
         var savedRecipeEntity = await _context.Recipes.AddAsync(alreadyCreatedRecipe);
         await _context.SaveChangesAsync();
         var savedRecipe =  savedRecipeEntity.Entity;
-        var requestObject = new UpdatedRecipeDto(savedRecipe.RecipeId, name, cookingTime, totalPersons);
-        // Todo fix update test
-
+        var updatedRecipeDto = new UpdatedRecipeDto(savedRecipe.RecipeId, name, cookingTime, totalPersons);
+       
+        var stringifiedContent = JsonConvert.SerializeObject(updatedRecipeDto);
+        var requestObject = new StringContent(stringifiedContent,  Encoding.UTF8, "application/json");
+        var response = await _httpClient.PatchAsync("api/Recipe", requestObject);
+        response.EnsureSuccessStatusCode();
+        
+        var contentOrError = await ResponseObjectHelper.GetResponseObject<Recipe>(response);
+        contentOrError.Some(content =>
+        {
+            Assert.Equal(content.Name, !string.IsNullOrEmpty(name) ? name : alreadyCreatedRecipe.Name);
+            Assert.Equal(content.CookingTime, cookingTime ?? alreadyCreatedRecipe.CookingTime);
+            Assert.Equal(content.TotalPersons, totalPersons ?? alreadyCreatedRecipe.TotalPersons);
+        }).None(() => Console.Write("Something bad happened"));
     }
 
     public void Dispose()

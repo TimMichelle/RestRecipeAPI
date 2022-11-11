@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using RecipesApp.Domain;
-using RestRecipeApp.Db;
+using RestRecipeApp.Persistence;
+using RestRecipeApp.Persistence.Models;
 
 namespace RestRecipeApp.Controllers
 {

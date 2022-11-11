@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using RecipesApp.Domain;
 using RestRecipeApp.Core.RequestDto.Recipe;
-using RestRecipeApp.Repositories;
+using RestRecipeApp.Persistence.Models;
+using RestRecipeApp.Persistence.Repositories;
 
 namespace RestRecipeApp.Controllers
 {
@@ -42,7 +42,7 @@ namespace RestRecipeApp.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PutRecipe(int id, UpdatedRecipeDto updatedRecipeDto)
+        public async Task<IActionResult> PatchRecipe(int id, UpdatedRecipeDto updatedRecipeDto)
         {
             if (id != updatedRecipeDto.RecipeId)
             {
@@ -60,8 +60,8 @@ namespace RestRecipeApp.Controllers
         [HttpPost]
         public async Task<ActionResult<Recipe>> PostRecipe(CreateRecipeDto recipe)
         {
-            var createdRecipe = await _repository.CreateRecipe(recipe);
-            return createdRecipe
+            var createdRecipeOrError = await _repository.CreateRecipe(recipe);
+            return createdRecipeOrError
                 .Right<ActionResult>(createdRecipe => CreatedAtAction("GetRecipe", new { id = createdRecipe.RecipeId }, recipe))
                 .Left(error => BadRequest(error.Message));
         }

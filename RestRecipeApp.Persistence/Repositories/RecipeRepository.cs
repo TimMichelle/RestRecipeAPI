@@ -1,13 +1,10 @@
 using System.Data.Common;
 using LanguageExt;
-using LanguageExt.Common;
-using Microsoft.CodeAnalysis.Text;
 using Microsoft.EntityFrameworkCore;
-using RecipesApp.Domain;
 using RestRecipeApp.Core.RequestDto.Recipe;
-using RestRecipeApp.Db;
+using RestRecipeApp.Persistence.Models;
 
-namespace RestRecipeApp.Repositories;
+namespace RestRecipeApp.Persistence.Repositories;
 
 public class RecipeRepository: IRecipeRepository
 {

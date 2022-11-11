@@ -8,6 +8,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestRecipeApp.Core", "RestR
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestRecipeAPI.TestFixtures", "RestRecipeAPI.TestFixtures\RestRecipeAPI.TestFixtures.csproj", "{6517F609-08D6-438D-96DD-CCD4D3D5ADCA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestRecipeApp.DbMigrator", "RestRecipeApp.DbMigrator\RestRecipeApp.DbMigrator.csproj", "{56C51E94-07D5-43EA-8FC6-A41604534B7B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestRecipeApp.Persistence", "RestRecipeApp.Persistence\RestRecipeApp.Persistence.csproj", "{7B7431F9-DFC3-4735-850D-444010057880}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +34,13 @@ Global
 		{6517F609-08D6-438D-96DD-CCD4D3D5ADCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6517F609-08D6-438D-96DD-CCD4D3D5ADCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6517F609-08D6-438D-96DD-CCD4D3D5ADCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56C51E94-07D5-43EA-8FC6-A41604534B7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56C51E94-07D5-43EA-8FC6-A41604534B7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56C51E94-07D5-43EA-8FC6-A41604534B7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56C51E94-07D5-43EA-8FC6-A41604534B7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B7431F9-DFC3-4735-850D-444010057880}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B7431F9-DFC3-4735-850D-444010057880}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B7431F9-DFC3-4735-850D-444010057880}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B7431F9-DFC3-4735-850D-444010057880}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
