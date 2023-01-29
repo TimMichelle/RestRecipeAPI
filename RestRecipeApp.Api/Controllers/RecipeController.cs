@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using RestRecipeApp.Core.RequestDto.Recipe;
+using RestRecipeApp.Core.ResponseDto;
 using RestRecipeApp.Persistence.Models;
 using RestRecipeApp.Persistence.Repositories;
+using LanguageExt;
 
 namespace RestRecipeApp.Controllers
 {
@@ -18,12 +20,23 @@ namespace RestRecipeApp.Controllers
 
         // GET: api/Recipe
         [HttpGet]
-        public async Task<ActionResult> GetRecipes()
+        public async Task<ActionResult<List<GetRecipeStepDto>>> GetRecipes()
         {
             var result =  await _repository.GetRecipes();
             return result.Right<ActionResult>(response =>
             {
-                return Ok(response);
+                return Ok(
+                    response.Map(recipe => new GetRecipeDto(
+                    recipe.Name,
+                    recipe.CookingTime,
+                    recipe.TotalPersons,
+                    recipe.Ingredients.Map(ingredient =>
+                        new GetIngredientDto(
+                            new GetProductDto(ingredient.Product.Name),
+                            ingredient.Amount,
+                            ingredient.UnitOfMeasurement)).ToList(),
+                    recipe.Steps.Map(step => new GetRecipeStepDto(step.StepNumber, step.Description)).ToList()))
+                    );
             }).Left(BadRequest);
         }
 
@@ -58,7 +71,7 @@ namespace RestRecipeApp.Controllers
         // POST: api/Recipe
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Recipe>> PostRecipe(CreateRecipeDto recipe)
+        public async Task<ActionResult<CreateRecipeDto>> PostRecipe(CreateRecipeDto recipe)
         {
             var createdRecipeOrError = await _repository.CreateRecipe(recipe);
             return createdRecipeOrError

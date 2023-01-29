@@ -26,6 +26,7 @@ public class RecipeRepository: IRecipeRepository
             return await _recipesContext.Recipes.
                 Include(r => r.Steps)
                 .Include(r => r.Ingredients)
+                .ThenInclude(i => i.Product)
                 .ToListAsync();
         }
         catch (DbException exception)
