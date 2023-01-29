@@ -65,6 +65,7 @@ namespace RestRecipeApp.Controllers
         [HttpPost]
         public async Task<ActionResult<GetIngredientDto>> PostIngredient(CreateIngredientDto ingredient)
         {
+            // Make recipeId optional in DTO and check here if it is set......
             var createdRecipeOrError = await _ingredientRepository.CreateIngredient(ingredient);
             return createdRecipeOrError
                 .Right<ActionResult>(createdIngredient =>

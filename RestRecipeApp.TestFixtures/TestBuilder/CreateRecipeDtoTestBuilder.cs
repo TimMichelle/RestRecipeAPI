@@ -11,7 +11,7 @@ public sealed class CreateRecipeDtoTestBuilder : Faker<CreateRecipeDto>
             f.Lorem.Slug(),
             f.Random.Int(1, 90),
             f.Random.Int(1, 10),
-            ingredients ?? new CreateIngredientDtoTestBuilder().Generate(4),
-            new CreateRecipeStepTestBuilder().Generate(10)));
+            ingredients ?? new List<CreateIngredientDto>(),
+            new List<CreateRecipeStepDto>()));
     }
 }
