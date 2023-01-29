@@ -11,4 +11,7 @@
       <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.8" />
     </ItemGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\RestRecipeApp.Persistence\RestRecipeApp.Persistence.csproj" />
+    </ItemGroup>
 </Project>

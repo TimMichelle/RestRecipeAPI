@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using RestRecipeAPI.TestFixtures;
 using RestRecipeAPI.TestFixtures.TestBuilder;
-using RestRecipeApp.Core.RequestDto.Recipe;
+using RestRecipeApp.Core.RequestDto;
 using RestRecipeApp.Persistence;
 using RestRecipeApp.Persistence.Models;
 using Xunit;

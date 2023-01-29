@@ -1,7 +1,7 @@
 using System.Data.Common;
 using LanguageExt;
 using Microsoft.EntityFrameworkCore;
-using RestRecipeApp.Core.RequestDto.Recipe;
+using RestRecipeApp.Core.RequestDto;
 using RestRecipeApp.Persistence.Models;
 
 namespace RestRecipeApp.Persistence.Repositories;

@@ -1,4 +1,4 @@
-namespace RestRecipeApp.Core.RequestDto.Recipe;
+namespace RestRecipeApp.Core.RequestDto;
 
 public record CreateRecipeStepDto(
     int StepNumber,
