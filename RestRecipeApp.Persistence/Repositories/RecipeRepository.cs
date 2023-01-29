@@ -55,15 +55,7 @@ public class RecipeRepository: IRecipeRepository
             Name = recipe.Name,
             CookingTime = recipe.CookingTime,
             TotalPersons = recipe.TotalPersons,
-            Ingredients = recipe.Ingredients.Select((ingredient) => new Ingredient()
-            {
-                UnitOfMeasurement = ingredient.UnitOfMeasurement,
-                Amount = ingredient.Amount,
-                Product = new Product()
-                {
-                    Name = ingredient.Product.Name
-                }
-            }).ToList(),
+            Ingredients = recipe.Ingredients.Select((ingredient) => ingredient.MapIngredient()).ToList(),
             Steps = recipe.Steps.Select((step) => new RecipeStep()
             {
                 Description = step.Description,
@@ -83,15 +75,17 @@ public class RecipeRepository: IRecipeRepository
         }
     }
 
+   
+
     public async Task<Either<DbError, Recipe>> UpdateRecipe(UpdatedRecipeDto updatedRecipe)
     {
         var currentRecipe = await _recipesContext.Recipes
             .Include(r => r.Ingredients)
-            .Include(r => r.Steps).FirstOrDefaultAsync(foundRecipe => foundRecipe.RecipeId == updatedRecipe.RecipeId);
+            .Include(r => r.Steps).FirstOrDefaultAsync(foundRecipe => foundRecipe.RecipeId == updatedRecipe.Id);
 
         if (currentRecipe == null)
         {
-            return new DbError($"Could not find recipe with id: {updatedRecipe.RecipeId}");
+            return new DbError($"Could not find recipe with id: {updatedRecipe.Id}");
         }
 
         currentRecipe.Name = !string.IsNullOrEmpty(updatedRecipe.Name) ? updatedRecipe.Name : currentRecipe.Name;
@@ -106,7 +100,7 @@ public class RecipeRepository: IRecipeRepository
         }
         catch (DbUpdateConcurrencyException error)
         {
-            return new DbError($"Could not save updates to recipe: {updatedRecipe.RecipeId}");
+            return new DbError($"Could not save updates to recipe: {updatedRecipe.Id}");
         }
 
         return currentRecipe;

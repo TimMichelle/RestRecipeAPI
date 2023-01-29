@@ -1,3 +1,3 @@
 namespace RestRecipeApp.Core.ResponseDto;
 
-public record GetProductDto(string Name);
+public record GetProductDto(int Id, string Name);

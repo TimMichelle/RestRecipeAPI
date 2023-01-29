@@ -14,6 +14,7 @@ public static class ServiceCollectionPersistence
                 b => b.MigrationsAssembly("RestRecipeApp.Persistence")));
 
         services.AddScoped<IRecipeRepository, RecipeRepository>();
+        services.AddScoped<IIngredientRepository, IngredientRepository>();
         return services;
     }
 }

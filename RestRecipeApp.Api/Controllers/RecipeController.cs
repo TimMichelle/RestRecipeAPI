@@ -47,7 +47,7 @@ namespace RestRecipeApp.Controllers
         [HttpPatch("{id}")]
         public async Task<ActionResult<GetRecipeDto>> PatchRecipe(int id, UpdatedRecipeDto updatedRecipeDto)
         {
-            if (id != updatedRecipeDto.RecipeId)
+            if (id != updatedRecipeDto.Id)
             {
                 return BadRequest();
             }
