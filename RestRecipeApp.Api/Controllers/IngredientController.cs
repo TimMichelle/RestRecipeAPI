@@ -72,7 +72,6 @@ namespace RestRecipeApp.Controllers
             {
                 return BadRequest($"Ingredient is not valid - {validatedResult.Errors}");
             }
-            // Make recipeId optional in DTO and check here if it is set......
             var createdRecipeOrError = await _ingredientRepository.CreateIngredient(ingredient);
             return createdRecipeOrError
                 .Right<ActionResult>(createdIngredient =>
