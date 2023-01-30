@@ -5,7 +5,8 @@ using RecipesApp.Domain;
 namespace RestRecipeApp.Core.RequestDto;
 
 public record CreateIngredientDto(
-    int RecipeId,
     CreateProductDto Product,
     float Amount,
-    UnitOfMeasurement UnitOfMeasurement);
+    UnitOfMeasurement UnitOfMeasurement,
+    int? RecipeId = null
+    );

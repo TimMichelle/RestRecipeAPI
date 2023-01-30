@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using RestRecipeApp.Core.RequestDto;
 using RestRecipeApp.Core.ResponseDto;
 using RestRecipeApp.Persistence.Repositories;
+using RestRecipeApp.Validation;
 
 namespace RestRecipeApp.Controllers
 {
@@ -65,6 +66,12 @@ namespace RestRecipeApp.Controllers
         [HttpPost]
         public async Task<ActionResult<GetIngredientDto>> PostIngredient(CreateIngredientDto ingredient)
         {
+            var validator = new CreateIngredientDtoValidator();
+            var validatedResult = validator.Validate(ingredient);
+            if (!validatedResult.IsValid)
+            {
+                return BadRequest($"Ingredient is not valid - {validatedResult.Errors}");
+            }
             // Make recipeId optional in DTO and check here if it is set......
             var createdRecipeOrError = await _ingredientRepository.CreateIngredient(ingredient);
             return createdRecipeOrError
