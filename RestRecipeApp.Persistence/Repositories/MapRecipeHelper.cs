@@ -24,14 +24,14 @@ public static class MapRecipeHelper
     {
         return new GetIngredientDto(
             ingredient.IngredientId,
-            ingredient.MapGetProductDto(),
+            ingredient.Product.MapGetProductDto(),
             ingredient.Amount,
             ingredient.UnitOfMeasurement);
     }
 
-    private static GetProductDto MapGetProductDto(this Ingredient ingredient)
+    public static GetProductDto MapGetProductDto(this Product product)
     {
-        return new GetProductDto(ingredient.Product.ProductId, ingredient.Product.Name);
+        return new GetProductDto(product.ProductId, product.Name);
     }
 
     public static GetRecipeStepDto MapGetRecipeStepDto(this RecipeStep step)
@@ -46,7 +46,7 @@ public static class MapRecipeHelper
             
             UnitOfMeasurement = ingredient.UnitOfMeasurement,
             Amount = ingredient.Amount,
-            Product = ingredient.MapProduct()
+            Product = ingredient.Product.MapProduct()
         };
         if (ingredient.RecipeId != null)
         {
@@ -56,11 +56,11 @@ public static class MapRecipeHelper
         return newIngredient;
     }
 
-    private static Product MapProduct(this CreateIngredientDto ingredient)
+    public static Product MapProduct(this CreateProductDto product)
     {
         return new Product()
         {
-            Name = ingredient.Product.Name
+            Name = product.Name
         };
     }
 }

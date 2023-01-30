@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using RestRecipeApp.Persistence;
+using RestRecipeApp.Core.RequestDto;
+using RestRecipeApp.Core.ResponseDto;
 using RestRecipeApp.Persistence.Models;
+using RestRecipeApp.Persistence.Repositories;
+using RestRecipeApp.Validation;
 
 namespace RestRecipeApp.Controllers
 {
@@ -9,115 +11,83 @@ namespace RestRecipeApp.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly RecipesDbContext _context;
+        private readonly IProductRepository _productRepository;
 
-        public ProductController(RecipesDbContext context)
+        public ProductController(IProductRepository productRepository)
         {
-            _context = context;
+            _productRepository = productRepository;
         }
 
         // GET: api/Product
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        public async Task<ActionResult<List<GetProductDto>>> GetProducts()
         {
-            if (_context.Products == null)
+            var result = await _productRepository.GetProducts();
+            return result.Right<ActionResult>(response =>
             {
-                return NotFound();
-            }
-
-            return await _context.Products.ToListAsync();
+                return Ok(response.Map(product => product.MapGetProductDto()));
+            }).Left(BadRequest);
         }
 
         // GET: api/Product/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
-            if (_context.Products == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products.FindAsync(id);
-
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            return product;
+            var productOrError = await _productRepository.GetProductById(id);
+            return productOrError
+                .Right<ActionResult>(foundProduct => Ok(foundProduct.MapGetProductDto()))
+                .Left(_ => NotFound($"Could not find product with id: {id}"));
         }
 
         // PUT: api/Product/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct(int id, Product product)
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchProduct(int id, UpdatedProductDto updatedProductDto)
         {
-            if (id != product.ProductId)
+            if (id != updatedProductDto.Id)
             {
-                return BadRequest();
+                return BadRequest("Ids are not the same");
             }
 
-            _context.Entry(product).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            var updatedProduct = await _productRepository.UpdateProduct(updatedProductDto);
+            return updatedProduct
+                .Right<ActionResult>(product =>
+                    CreatedAtAction("GetProduct", new { id = product.ProductId }, product))
+                .Left(error => BadRequest(error.Message));
         }
 
         // POST: api/Product
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Product>> PostProduct(Product product)
+        public async Task<ActionResult<Product>> PostProduct(CreateProductDto product)
         {
-            if (_context.Products == null)
+            var validator = new CreateProductDtoValidator();
+            var validatetResult = validator.Validate(product);
+            if (!validatetResult.IsValid)
             {
-                return Problem("Entity set 'RecipesContext.Products'  is null.");
+                return BadRequest($"Product is not valid - {string.Join(", ", validatetResult.Errors)}");
+
             }
 
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync();
+            var createdProductOrError = await _productRepository.CreateProduct(product);
 
-            return CreatedAtAction("GetProduct", new { id = product.ProductId }, product);
+            return createdProductOrError
+                .Right<ActionResult>(createdProduct =>
+                    CreatedAtAction("GetProduct", new { id = createdProduct.ProductId }, createdProduct))
+                .Left(error => BadRequest(error.Message));
         }
 
         // DELETE: api/Product/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
-            if (_context.Products == null)
+            var isFoundAndRemove = await _productRepository.RemoveProduct(id);
+            if (!isFoundAndRemove)
             {
                 return NotFound();
             }
-
-            var product = await _context.Products.FindAsync(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        private bool ProductExists(int id)
-        {
-            return (_context.Products?.Any(e => e.ProductId == id)).GetValueOrDefault();
         }
     }
 }

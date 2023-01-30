@@ -36,7 +36,7 @@ namespace RestRecipeApp.Controllers
             var ingredientOrError = await _ingredientRepository.GetIngredientById(id);
 
             return ingredientOrError
-                .Right<ActionResult>(updatedIngredient => Ok(updatedIngredient.MapGetIngredientDto()))
+                .Right<ActionResult>(foundIngredient => Ok(foundIngredient.MapGetIngredientDto()))
                 .Left(error => NotFound($"Error occured while retrieving ingredient: {error.Message}"));
         }
 
@@ -51,8 +51,8 @@ namespace RestRecipeApp.Controllers
                 return BadRequest("Ids are not the same");
             }
 
-            var updatedRecipe = await _ingredientRepository.UpdateIngredient(updatedIngredientDto);
-            return updatedRecipe
+            var updateIngredient = await _ingredientRepository.UpdateIngredient(updatedIngredientDto);
+            return updateIngredient
                 .Right<ActionResult>(ingredient =>
                     CreatedAtAction("GetIngredient", new { id = ingredient.IngredientId }, ingredient))
                 .Left(error => BadRequest(error.Message));
@@ -69,10 +69,10 @@ namespace RestRecipeApp.Controllers
             {
                 return BadRequest($"Ingredient is not valid - {string.Join(", ", validatedResult.Errors)}");
             }
-            var createdRecipeOrError = await _ingredientRepository.CreateIngredient(ingredient);
-            return createdRecipeOrError
+            var createdIngredientOrError = await _ingredientRepository.CreateIngredient(ingredient);
+            return createdIngredientOrError
                 .Right<ActionResult>(createdIngredient =>
-                    CreatedAtAction("GetIngredient", new { id = createdIngredient.RecipeId }, createdIngredient))
+                    CreatedAtAction("GetIngredient", new { id = createdIngredient.IngredientId }, createdIngredient))
                 .Left(error => BadRequest(error.Message));
         }
 
