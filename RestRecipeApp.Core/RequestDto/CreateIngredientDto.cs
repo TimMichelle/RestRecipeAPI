@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using RecipesApp.Domain;
+using RestRecipeApp.Core.Domain;
 
 namespace RestRecipeApp.Core.RequestDto;
 

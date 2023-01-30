@@ -1,5 +1,5 @@
 using Bogus;
-using RecipesApp.Domain;
+using RestRecipeApp.Core.Domain;
 using RestRecipeApp.Core.RequestDto;
 
 namespace RestRecipeAPI.TestFixtures.TestBuilder;

@@ -8,17 +8,26 @@ namespace RestRecipeApp.Persistence.Repositories;
 public class IngredientRepository : IIngredientRepository
 {
     private readonly RecipesDbContext _recipesContext;
+
     public IngredientRepository(RecipesDbContext recipesContext)
     {
         _recipesContext = recipesContext;
     }
-    
-    
-    public async Task<Ingredient?> GetIngredientById(int id)
+
+
+    public async Task<Either<DbError, Ingredient>> GetIngredientById(int id)
     {
-        return await _recipesContext.Ingredients
-            .Include(ingredient => ingredient.Product)
-            .Where(foundIngredient => foundIngredient.IngredientId == id).FirstAsync();
+        try
+        {
+            return await _recipesContext.Ingredients
+                .Where(foundIngredient => foundIngredient.IngredientId == id)
+                .Include(x => x.Product)
+                .FirstAsync();
+        }
+        catch (Exception error)
+        {
+            return new DbError($"Could not retrieve ingredient: ${id} - error: {error.Message}");
+        }
     }
 
     public async Task<Either<DbError, List<Ingredient>>> GetIngredients()
@@ -50,7 +59,6 @@ public class IngredientRepository : IIngredientRepository
         catch (Exception e)
         {
             return new DbError($"Could not create ingredient: {e.Message}");
-
         }
     }
 

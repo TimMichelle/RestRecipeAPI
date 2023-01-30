@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using RecipesApp.Domain;
+using RestRecipeApp.Core.Domain;
 using RestRecipeApp.Persistence.Models;
 
 namespace RestRecipeApp.Persistence;

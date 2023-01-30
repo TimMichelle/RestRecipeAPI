@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace RecipesApp.Domain;
+namespace RestRecipeApp.Core.Domain;
 
 [JsonConverter(typeof(StringEnumConverter))]
 public enum UnitOfMeasurement

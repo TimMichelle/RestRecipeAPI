@@ -41,13 +41,19 @@ public static class MapRecipeHelper
     
     public static Ingredient MapIngredient(this CreateIngredientDto ingredient)
     {
-        return new Ingredient()
+        var newIngredient =  new Ingredient()
         {
-            RecipeId = ingredient.RecipeId,
+            
             UnitOfMeasurement = ingredient.UnitOfMeasurement,
             Amount = ingredient.Amount,
             Product = ingredient.MapProduct()
         };
+        if (ingredient.RecipeId != null)
+        {
+            newIngredient.RecipeId = (int)ingredient.RecipeId!;
+        }
+
+        return newIngredient;
     }
 
     private static Product MapProduct(this CreateIngredientDto ingredient)

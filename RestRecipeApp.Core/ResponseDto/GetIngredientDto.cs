@@ -1,4 +1,4 @@
-using RecipesApp.Domain;
+using RestRecipeApp.Core.Domain;
 
 namespace RestRecipeApp.Core.ResponseDto;
 
