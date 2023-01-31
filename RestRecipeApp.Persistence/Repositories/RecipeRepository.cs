@@ -13,9 +13,19 @@ public class RecipeRepository: IRecipeRepository
     {
         _recipesContext = recipesContext;
     }
-    public async Task<Recipe?> GetRecipeById(int id)
+    public async Task<Either<DbError, Recipe>> GetRecipeById(int id)
     {
-        return await _recipesContext.Recipes.FindAsync(id);
+        try
+        {
+            return await _recipesContext.Recipes.Include(r => r.Steps)
+                .Include(r => r.Ingredients)
+                .ThenInclude(i => i.Product)
+                .Where(foundRecipe => foundRecipe.RecipeId == id).FirstAsync();
+        }
+        catch (DbException exception)
+        {
+            return new DbError($"Could not retrieve recipe with id: {id}");
+        }
     }
 
     public async Task<Either<DbError, List<Recipe>>> GetRecipes()

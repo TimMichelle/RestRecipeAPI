@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using RestRecipeApp.Core.ResponseDto;
 using RestRecipeApp.Persistence.Repositories;
-using RestRecipeApp.Core;
 using RestRecipeApp.Core.RequestDto;
 
 namespace RestRecipeApp.Controllers
@@ -34,14 +33,11 @@ namespace RestRecipeApp.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GetRecipeDto>> GetRecipe(int id)
         {
-            var recipe = await _repository.GetRecipeById(id);
+            var recipeOrError = await _repository.GetRecipeById(id);
 
-            if (recipe == null)
-            {
-                return NotFound();
-            }
-
-            return recipe.MapGetRecipeDto();
+            return recipeOrError
+                .Right<ActionResult>(foundRecipe => Ok(foundRecipe.MapGetRecipeDto()))
+                .Left(error => NotFound($"Error occured while retrieving ingredient: {error.Message}"));
         }
 
         [HttpPatch("{id}")]
