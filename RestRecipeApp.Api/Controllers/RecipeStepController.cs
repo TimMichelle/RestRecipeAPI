@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using RestRecipeApp.Persistence;
+using RestRecipeApp.Core.RequestDto;
 using RestRecipeApp.Persistence.Models;
+using RestRecipeApp.Persistence.Repositories;
+using RestRecipeApp.Validation;
 
 namespace RestRecipeApp.Controllers
 {
@@ -9,115 +10,81 @@ namespace RestRecipeApp.Controllers
     [ApiController]
     public class RecipeStepController : ControllerBase
     {
-        private readonly RecipesDbContext _context;
+        private readonly IRecipeStepRepository _recipeStepRepository;
 
-        public RecipeStepController(RecipesDbContext context)
+        public RecipeStepController(IRecipeStepRepository recipeStepRepository)
         {
-            _context = context;
+            _recipeStepRepository = recipeStepRepository;
         }
 
         // GET: api/RecipeStep
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RecipeStep>>> GetRecipeSteps()
         {
-            if (_context.RecipeSteps == null)
+            var result = await _recipeStepRepository.GetRecipeSteps();
+            return result.Right<ActionResult>(response =>
             {
-                return NotFound();
-            }
-
-            return await _context.RecipeSteps.ToListAsync();
+                return Ok(response.Map(recipeStep => recipeStep.MapGetRecipeStepDto()));
+            }).Left(BadRequest);
         }
 
         // GET: api/RecipeStep/5
         [HttpGet("{id}")]
         public async Task<ActionResult<RecipeStep>> GetRecipeStep(int id)
         {
-            if (_context.RecipeSteps == null)
-            {
-                return NotFound();
-            }
-
-            var recipeStep = await _context.RecipeSteps.FindAsync(id);
-
-            if (recipeStep == null)
-            {
-                return NotFound();
-            }
-
-            return recipeStep;
+            var recipeStepOrError = await _recipeStepRepository.GetRecipeStepById(id);
+            return recipeStepOrError
+                .Right<ActionResult>(foundRecipeStep => Ok(foundRecipeStep.MapGetRecipeStepDto()))
+                .Left(_ => NotFound($"Could not find recipe step with id: {id}"));
         }
 
         // PUT: api/RecipeStep/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutRecipeStep(int id, RecipeStep recipeStep)
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchRecipeStep(int id, UpdatedRecipeStepDto updateRecipeStep)
         {
-            if (id != recipeStep.RecipeStepId)
+            if (id != updateRecipeStep.Id)
             {
-                return BadRequest();
+                return BadRequest("Ids are not the same");
             }
 
-            _context.Entry(recipeStep).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RecipeStepExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            var updatedRecipeStep = await _recipeStepRepository.UpdateRecipeStep(updateRecipeStep);
+            return updatedRecipeStep
+                .Right<ActionResult>(recipeStep =>
+                    CreatedAtAction("GetRecipeStep", new { id = recipeStep.RecipeStepId }, recipeStep))
+                .Left(error => BadRequest(error.Message));
         }
 
         // POST: api/RecipeStep
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<RecipeStep>> PostRecipeStep(RecipeStep recipeStep)
+        public async Task<ActionResult<RecipeStep>> PostRecipeStep(CreateRecipeStepDto createRecipeStepDto)
         {
-            if (_context.RecipeSteps == null)
+            var validator = new CreateRecipeStepDtoValidator();
+            var validatedResult = validator.Validate(createRecipeStepDto);
+            if (!validatedResult.IsValid)
             {
-                return Problem("Entity set 'RecipesContext.RecipeSteps'  is null.");
+                return BadRequest($"Recipe step is not valid - {string.Join(", ", validatedResult.Errors)}");
             }
+            var createdRecipeStepOrError = await _recipeStepRepository.CreateRecipeStep(createRecipeStepDto);
 
-            _context.RecipeSteps.Add(recipeStep);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetRecipeStep", new { id = recipeStep.RecipeStepId }, recipeStep);
+            return createdRecipeStepOrError
+                .Right<ActionResult>(createdRecipeStep =>
+                    CreatedAtAction("GetRecipeStep", new { id = createdRecipeStep.RecipeStepId }, createdRecipeStep))
+                .Left(error => BadRequest(error.Message));
         }
 
         // DELETE: api/RecipeStep/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRecipeStep(int id)
         {
-            if (_context.RecipeSteps == null)
+            var isFoundAndRemove = await _recipeStepRepository.RemoveRecipeStep(id);
+            if (!isFoundAndRemove)
             {
                 return NotFound();
             }
-
-            var recipeStep = await _context.RecipeSteps.FindAsync(id);
-            if (recipeStep == null)
-            {
-                return NotFound();
-            }
-
-            _context.RecipeSteps.Remove(recipeStep);
-            await _context.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        private bool RecipeStepExists(int id)
-        {
-            return (_context.RecipeSteps?.Any(e => e.RecipeStepId == id)).GetValueOrDefault();
         }
     }
 }

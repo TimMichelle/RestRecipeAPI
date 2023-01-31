@@ -63,4 +63,19 @@ public static class MapRecipeHelper
             Name = product.Name
         };
     }
+    
+    public static RecipeStep MapRecipeStep(this CreateRecipeStepDto recipeStep)
+    {
+        var newRecipeStep =  new RecipeStep()
+        {
+            StepNumber = recipeStep.StepNumber,
+            Description = recipeStep.Description
+        };
+        if (recipeStep.RecipeId != null)
+        {
+            newRecipeStep.RecipeId = (int)recipeStep.RecipeId;
+        }
+
+        return newRecipeStep;
+    }
 }

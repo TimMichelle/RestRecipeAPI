@@ -23,7 +23,7 @@ public class ProductRepository : IProductRepository
         }
         catch (Exception error)
         {
-            return new DbError($"Could not retrieve ingredient: ${id} - error: {error.Message}");
+            return new DbError($"Could not retrieve product: ${id} - error: {error.Message}");
         }
     }
 
@@ -50,13 +50,13 @@ public class ProductRepository : IProductRepository
     {
         try
         {
-            var savedIngredient = await _recipesContext.Products.AddAsync(product.MapProduct());
+            var savedProduct = await _recipesContext.Products.AddAsync(product.MapProduct());
             await _recipesContext.SaveChangesAsync();
-            return savedIngredient.Entity;
+            return savedProduct.Entity;
         }
         catch (Exception e)
         {
-            return new DbError($"Could not create ingredient: {e.Message}");
+            return new DbError($"Could not create product: {e.Message}");
         }
     }
 
@@ -66,7 +66,7 @@ public class ProductRepository : IProductRepository
             .FirstOrDefaultAsync(foundProduct => foundProduct.ProductId == updatedProductDto.Id);
         if (currentProduct == null)
         {
-            return new DbError($"Could not find ingredient with id: {updatedProductDto.Id}");
+            return new DbError($"Could not find product with id: {updatedProductDto.Id}");
         }
 
         currentProduct.Name = updatedProductDto.Name;
@@ -78,7 +78,7 @@ public class ProductRepository : IProductRepository
         }
         catch (Exception error)
         {
-            return new DbError($"$Could not save changes to ingredient: {updatedProductDto.Id} - {error.Message}");
+            return new DbError($"$Could not save changes to product: {updatedProductDto.Id} - {error.Message}");
         }
 
         return currentProduct;
