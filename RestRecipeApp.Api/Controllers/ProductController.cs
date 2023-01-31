@@ -49,6 +49,13 @@ namespace RestRecipeApp.Controllers
                 return BadRequest("Ids are not the same");
             }
 
+            var validator = new UpdatedProductDtoValidator();
+            var validatedResult = validator.Validate(updatedProductDto);
+            if (!validatedResult.IsValid)
+            {
+                return BadRequest($"Product is not valid - {string.Join(", ", validatedResult.Errors)}");
+            }
+
             var updatedProduct = await _productRepository.UpdateProduct(updatedProductDto);
             return updatedProduct
                 .Right<ActionResult>(product =>
@@ -62,10 +69,10 @@ namespace RestRecipeApp.Controllers
         public async Task<ActionResult<Product>> PostProduct(CreateProductDto product)
         {
             var validator = new CreateProductDtoValidator();
-            var validatetResult = validator.Validate(product);
-            if (!validatetResult.IsValid)
+            var validatedResult = validator.Validate(product);
+            if (!validatedResult.IsValid)
             {
-                return BadRequest($"Product is not valid - {string.Join(", ", validatetResult.Errors)}");
+                return BadRequest($"Product is not valid - {string.Join(", ", validatedResult.Errors)}");
 
             }
 
