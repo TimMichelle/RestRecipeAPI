@@ -91,7 +91,9 @@ public class RecipeRepository: IRecipeRepository
     {
         var currentRecipe = await _recipesContext.Recipes
             .Include(r => r.Ingredients)
-            .Include(r => r.Steps).FirstOrDefaultAsync(foundRecipe => foundRecipe.RecipeId == updatedRecipe.Id);
+            .ThenInclude(i => i.Product)
+            .Include(r => r.Steps)
+            .FirstOrDefaultAsync(foundRecipe => foundRecipe.RecipeId == updatedRecipe.Id);
 
         if (currentRecipe == null)
         {

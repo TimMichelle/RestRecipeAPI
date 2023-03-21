@@ -50,8 +50,7 @@ namespace RestRecipeApp.Controllers
 
             var updatedRecipe = await _repository.UpdateRecipe(updatedRecipeDto);
             return updatedRecipe
-                .Right<ActionResult>(recipe =>
-                    CreatedAtAction("GetRecipe", new { id = recipe.RecipeId }, recipe))
+                .Right<ActionResult>(foundRecipe => Ok(foundRecipe.MapGetRecipeDto()))
                 .Left(error => BadRequest(error.Message));
         }
 
@@ -63,8 +62,7 @@ namespace RestRecipeApp.Controllers
         {
             var createdRecipeOrError = await _repository.CreateRecipe(recipe);
             return createdRecipeOrError
-                .Right<ActionResult>(createdRecipe =>
-                    CreatedAtAction("GetRecipe", new { id = createdRecipe.RecipeId }, recipe))
+                .Right<ActionResult>(foundRecipe => Ok(foundRecipe.MapGetRecipeDto()))
                 .Left(error => BadRequest(error.Message));
         }
 
