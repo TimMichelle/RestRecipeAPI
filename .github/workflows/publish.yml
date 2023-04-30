@@ -21,5 +21,4 @@ jobs:
       - name: Build and push
         run: |
               docker build . --tag $DOCKER_IMAGE_TAG:latest
-              docker run $DOCKER_IMAGE_TAG:latest
               docker push $DOCKER_IMAGE_TAG:latest
