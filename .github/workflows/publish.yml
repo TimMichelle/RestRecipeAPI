@@ -1,5 +1,10 @@
 name: publish
+
 on: [push]
+
+env:
+  DOCKER_IMAGE_TAG: ghcr.io/timmichelle/recepten_app_backend
+
 jobs:
   publish-docker-image:
     runs-on: ubuntu-latest
@@ -15,6 +20,6 @@ jobs:
 
       - name: Build and push
         run: |
-              docker build . --tag ghcr.io/timmichelle/recepten_app_backend:latest
-              docker run ghcr.io/timmichelle/recepten_app_backend:latest
-              docker push ghcr.io/timmichelle/recepten_app_backend:latest
+              docker build . --tag $DOCKER_IMAGE_TAG:latest
+              docker run $DOCKER_IMAGE_TAG:latest
+              docker push $DOCKER_IMAGE_TAG:latest
