@@ -34,4 +34,8 @@
         <InternalsVisibleTo Include="RestRecipeApp.Test" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Dockerfile" />
+    </ItemGroup>
+
 </Project>
