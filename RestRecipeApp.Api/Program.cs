@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using RestRecipeApp.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,17 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers().AddNewtonsoftJson();
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var serviceProvider = scope.ServiceProvider;
+    var dbContext = serviceProvider.GetRequiredService<RecipesDbContext>();
+
+    // Apply pending migrations
+    if (dbContext.Database.GetPendingMigrations().Any())
+    {
+        dbContext.Database.Migrate();
+    }
+}
 
 app.UseSwagger();
 app.UseSwaggerUI();

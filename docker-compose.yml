@@ -16,23 +16,7 @@ services:
     depends_on: [database]
     build: .
     ports:
-      - "8080:80"      
-  
-#  test-database:
-#    image: postgres:14-alpine
-#    restart: unless-stopped
-#    ports:
-#      - "3340:5432"
-#    environment:
-#      POSTGRES_DB: testRestRecipesDB
-#      POSTGRES_USER: develop
-#      POSTGRES_PASSWORD: lekkereten
-#    volumes:
-#      - recipes-test-db-config:/etc/postgres
-#      - recipes-test-db:/var/lib/postgresql/data
-
+      - "8000:8000"
 volumes:
   recipes-db-config:
   recipes-db:
-  recipes-test-db-config:
-  recipes-test-db:

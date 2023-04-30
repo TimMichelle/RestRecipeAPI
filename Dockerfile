@@ -1,11 +1,11 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+﻿FROM mcr.microsoft.com/dotnet/sdk:6.0 AS base
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY . .
+
+
 RUN dotnet restore
 RUN dotnet build "RestRecipeApp.Api/RestRecipeApp.Api.csproj" -c Release -o /app/build
 RUN dotnet build "RestRecipeApp.Core/RestRecipeApp.Core.csproj" -c Release -o /app/build
@@ -20,4 +20,7 @@ RUN dotnet publish "RestRecipeApp.Persistence/RestRecipeApp.Persistence.csproj" 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "RestRecipeApp.Api.dll"]
+COPY run-rest-api.sh /app
+COPY wait-for-it.sh /app
+RUN apt-get update && apt-get install -y netcat 
+ENTRYPOINT ["sh","/app/run-rest-api.sh"]
