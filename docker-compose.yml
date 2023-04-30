@@ -1,9 +1,5 @@
 version: "3.9"
 services:
-  rest-api:
-    build: .
-    ports:
-      - "8080:80"
   database:
     image: postgres:14-alpine
     restart: unless-stopped
@@ -16,6 +12,12 @@ services:
     volumes:
       - recipes-db-config:/etc/postgres
       - recipes-db:/var/lib/postgresql/data
+  rest-api:
+    depends_on: [database]
+    build: .
+    ports:
+      - "8080:80"      
+  
 #  test-database:
 #    image: postgres:14-alpine
 #    restart: unless-stopped
