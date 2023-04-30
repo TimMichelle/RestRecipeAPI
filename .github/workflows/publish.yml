@@ -3,7 +3,7 @@ name: publish
 on: [push]
 
 env:
-  DOCKER_IMAGE_TAG: ghcr.io/timmichelle/recepten_app_backend
+  DOCKER_IMAGE_TAG: ghcr.io/timmichelle/recipe_api
 
 jobs:
   publish-docker-image:
