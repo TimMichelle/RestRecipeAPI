@@ -4,7 +4,14 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY . .
+ENV APPLICATION_URL=http://0.0.0.0:8000
+ENV DB_HOST=database
+ENV DB_PORT=5432
+ENV DB_DATABASENAME=restRecipesDB
+ENV DB_USERNAME=develop
+ENV DB_PASSWORD=lekkereten
 
+RUN sh ./configure-appsettings.sh
 
 RUN dotnet restore
 RUN dotnet build "RestRecipeApp.Api/RestRecipeApp.Api.csproj" -c Release -o /app/build
