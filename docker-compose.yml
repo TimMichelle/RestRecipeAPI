@@ -20,6 +20,7 @@ services:
     environment:
       ASPNETCORE_URLS: "http://0.0.0.0:8000"
       ConnectionStrings__DbConnection: "Server=database;Port=5432;Database=restRecipesDB;Username=develop;Password=lekkereten"
+      DATABASE_HOST=database
 volumes:
   recipes-db-config:
   recipes-db:

@@ -6,6 +6,7 @@ WORKDIR /src
 COPY . .
 ENV ASPNETCORE_URLS=http://0.0.0.0:8000
 ENV ConnectionStrings__DbConnection=Server=database;Port=5432;Database=restRecipesDB;Username=develop;Password=lekkereten
+ENV DATABASE_HOST=database
 
 RUN dotnet restore
 RUN dotnet build "RestRecipeApp.Api/RestRecipeApp.Api.csproj" -c Release -o /app/build
