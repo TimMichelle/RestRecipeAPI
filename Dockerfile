@@ -4,7 +4,7 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY . .
-ENV ASPNETCORE_URLS=http://0.0.0.0:8001
+ENV ASPNETCORE_URLS=http://0.0.0.0:8000
 ENV ConnectionStrings__DbConnection=Server=database;Port=5432;Database=restRecipesDB;Username=develop;Password=lekkereten
 
 RUN dotnet restore
