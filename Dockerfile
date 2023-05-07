@@ -5,13 +5,7 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY . .
 ENV ASPNETCORE_URLS=http://0.0.0.0:8001
-ENV DB_HOST=database
-ENV DB_PORT=5432
-ENV DB_DATABASENAME=restRecipesDB
-ENV DB_USERNAME=develop
-ENV DB_PASSWORD=lekkereten
-
-RUN sh ./configure-appsettings.sh
+ENV ConnectionStrings__DbConnection=Server=database;Port=5432;Database=restRecipesDB;Username=develop;Password=lekkereten
 
 RUN dotnet restore
 RUN dotnet build "RestRecipeApp.Api/RestRecipeApp.Api.csproj" -c Release -o /app/build
