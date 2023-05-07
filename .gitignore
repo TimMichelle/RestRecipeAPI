@@ -8,3 +8,7 @@ riderModule.iml
 
 /RestRecipeApp.*/appsettings.json
 /RestRecipeApp.*/appsettings.Test.json
+
+# vim
+*.swp
+*.swo
