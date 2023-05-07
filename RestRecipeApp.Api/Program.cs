@@ -27,6 +27,9 @@ using (var scope = app.Services.CreateScope())
     if (dbContext.Database.GetPendingMigrations().Any())
     {
         dbContext.Database.Migrate();
+        Console.Write("Migrated database");
+    } else {
+        Console.Write("Nothing to migrate");
     }
 }
 
