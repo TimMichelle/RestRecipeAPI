@@ -17,6 +17,8 @@ services:
     build: .
     ports:
       - "8000:8000"
+    environment:
+      ASPNETCORE_URLS: "http://0.0.0.0:8000"
 volumes:
   recipes-db-config:
   recipes-db:
