@@ -9,8 +9,13 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: myCors,
         policy =>
         {
-            policy.WithOrigins("http://localhost:3000",
-                "http://localhost:3001").AllowAnyMethod().AllowAnyHeader();
+            policy.WithOrigins(
+                "http://localhost:3000",
+                "http://localhost:3001",
+                "http://recipe_nextjs:*",
+                "http://recipe_api:*",
+                "http://192.168.1.111:*"
+            ).AllowAnyMethod().AllowAnyHeader();
         });
 });
 builder.Services.AddRepositories(builder.Configuration);
