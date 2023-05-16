@@ -15,7 +15,7 @@ public static class MapRecipeHelper
             recipe.TotalPersons,
             recipe.Ingredients.Map(ingredient =>
                 ingredient.MapGetIngredientDto()).ToList(),
-            recipe.Steps.Map(step => step.MapGetRecipeStepDto()).ToList());
+            recipe.Steps.Map(step => step.MapGetRecipeStepDto()).OrderBy(x => x.StepNumber).ToList());
     }
 
    
