@@ -4,7 +4,7 @@ services:
     image: postgres:14-alpine
     restart: unless-stopped
     ports:
-      -   "3330:5432"
+      -   "5432:5432"
     environment:
       POSTGRES_DB: restRecipesDB
       POSTGRES_USER: develop
@@ -12,14 +12,14 @@ services:
     volumes:
       - recipes-db-config:/etc/postgres
       - recipes-db:/var/lib/postgresql/data
-  rest-api:
-    depends_on: [database]
-    build: .
-    ports:
-      - "8000:8000"
-    environment:
-      ASPNETCORE_URLS: "http://0.0.0.0:8000"
-      ConnectionStrings__DbConnection: "Server=database;Port=5432;Database=restRecipesDB;Username=develop;Password=lekkereten"
+#  rest-api:
+#    depends_on: [database]
+#    build: .
+#    ports:
+#      - "8000:8000"
+#    environment:
+#      ASPNETCORE_URLS: "http://0.0.0.0:8000"
+#      ConnectionStrings__DbConnection: "Server=database;Port=5432;Database=restRecipesDB;Username=develop;Password=lekkereten"
 volumes:
   recipes-db-config:
   recipes-db:

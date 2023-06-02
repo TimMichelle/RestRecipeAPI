@@ -23,4 +23,6 @@ public class RecipesDbContext : DbContext
     public DbSet<Ingredient> Ingredients { get; set; } = null!;
     public DbSet<RecipeStep> RecipeSteps { get; set; } = null!;
     public DbSet<Product> Products { get; set; } = null!;
+    public DbSet<ShoppingList> ShoppingLists { get; set; } = null!;
+    public DbSet<ShoppingListItem> ShoppingListItems { get; set; } = null!;
 }
