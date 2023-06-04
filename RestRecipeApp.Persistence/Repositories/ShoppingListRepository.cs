@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using RestRecipeApp.Core.RequestDto;
 using RestRecipeApp.Persistence.Models;
 
 namespace RestRecipeApp.Persistence.Repositories;
@@ -6,10 +7,12 @@ namespace RestRecipeApp.Persistence.Repositories;
 public class ShoppingListRepository : IShoppingListRepository
 {
     private readonly RecipesDbContext _context;
+    private readonly IIngredientRepository _ingredientRepository;
 
-    public ShoppingListRepository(RecipesDbContext context)
+    public ShoppingListRepository(RecipesDbContext context, IIngredientRepository ingredientRepository)
     {
         _context = context;
+        _ingredientRepository = ingredientRepository;
     }
 
     public async Task<ShoppingList?> GetShoppingListById(int id)
@@ -26,20 +29,25 @@ public class ShoppingListRepository : IShoppingListRepository
             .ToListAsync();
     }
 
-    public async Task<ShoppingList> CreateShoppingList(ShoppingList shoppingList)
+    public async Task<ShoppingList> CreateShoppingList(int recipeId)
     {
-        _context.ShoppingLists.Add(shoppingList);
+        var ingredients = await _ingredientRepository.GetIngredients(recipeId);
+        var items = ingredients.Select(x => new ShoppingListItem
+        {
+            IngredientId = x.IngredientId,
+            IsBought = false
+        }).ToList();
+
+        var createdShoppingList = _context.ShoppingLists.Add(new ShoppingList()
+        {
+            RecipeId = recipeId,
+            Items = items
+        });
+        
         await _context.SaveChangesAsync();
-        return shoppingList;
+        return createdShoppingList.Entity;
     }
 
-    public async Task<ShoppingList> UpdateShoppingList(ShoppingList shoppingList)
-    {
-        _context.ShoppingLists.Update(shoppingList);
-        await _context.SaveChangesAsync();
-        return shoppingList;
-    }
-    
     public async Task RemoveShoppingList(ShoppingList shoppingList)
     {
         _context.ShoppingLists.Remove(shoppingList);

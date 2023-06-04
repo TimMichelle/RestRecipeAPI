@@ -18,6 +18,7 @@ public static class ServiceCollectionPersistence
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IRecipeStepRepository, RecipeStepRepository>();
         services.AddScoped<IShoppingListRepository, ShoppingListRepository>();
+        services.AddScoped<IShoppingListItemRepository, ShoppingListItemRepository>();
         return services;
     }
 }

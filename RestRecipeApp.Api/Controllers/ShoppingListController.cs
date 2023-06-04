@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using RestRecipeApp.Core.RequestDto;
 using RestRecipeApp.Persistence.Models;
 using RestRecipeApp.Persistence.Repositories;
 
@@ -37,28 +39,12 @@ namespace RestRecipeApp.Controllers
 
         // POST api/shoppinglist
         [HttpPost]
-        public async Task<ActionResult<ShoppingList>> CreateShoppingList(ShoppingList shoppingList)
+        public async Task<ActionResult<ShoppingList>> CreateShoppingList([BindRequired] int recipeId)
         {
-            await _shoppingListRepository.CreateShoppingList(shoppingList);
+            var createdShoppingList
+                = await _shoppingListRepository.CreateShoppingList(recipeId);
 
-            return CreatedAtAction(nameof(GetShoppingList), new { id = shoppingList.ShoppingListId }, shoppingList);
-        }
-
-        // PUT api/shoppinglist/{id}
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateShoppingList(int id, ShoppingList updatedShoppingList)
-        {
-            var shoppingList = await _shoppingListRepository.GetShoppingListById(id);
-
-            if (shoppingList == null)
-                return NotFound();
-
-            shoppingList.RecipeId = updatedShoppingList.RecipeId;
-            shoppingList.Items = updatedShoppingList.Items;
-
-            await _shoppingListRepository.UpdateShoppingList(shoppingList);
-
-            return NoContent();
+            return CreatedAtAction(nameof(GetShoppingList), new { id = createdShoppingList.ShoppingListId }, createdShoppingList);
         }
 
         // DELETE api/shoppinglist/{id}
