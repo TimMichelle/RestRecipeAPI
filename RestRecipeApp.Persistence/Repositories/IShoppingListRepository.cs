@@ -5,8 +5,8 @@ namespace RestRecipeApp.Persistence.Repositories;
 
 public interface IShoppingListRepository
 {
-    public Task<ShoppingList?> GetShoppingListById(int id);
-    public Task<List<ShoppingList>> GetAll();
-    public Task<ShoppingList> CreateShoppingList(int recipeId);
-    public Task RemoveShoppingList(ShoppingList shoppingList);
+    public Task<GetShoppingList?> GetShoppingListById(int id);
+    public Task<List<GetShoppingList>> GetAll();
+    public Task<GetShoppingList?> CreateShoppingList(int recipeId);
+    public Task RemoveShoppingList(int shoppingListId);
 }

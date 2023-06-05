@@ -44,7 +44,10 @@ namespace RestRecipeApp.Controllers
             var createdShoppingList
                 = await _shoppingListRepository.CreateShoppingList(recipeId);
 
-            return CreatedAtAction(nameof(GetShoppingList), new { id = createdShoppingList.ShoppingListId }, createdShoppingList);
+            if (createdShoppingList != null)
+                return CreatedAtAction(nameof(GetShoppingList), new { id = createdShoppingList.ShoppingListId },
+                    createdShoppingList);
+            return BadRequest("Could not create shopping list");
         }
 
         // DELETE api/shoppinglist/{id}
@@ -56,7 +59,7 @@ namespace RestRecipeApp.Controllers
             if (shoppingList == null)
                 return NotFound();
 
-            await _shoppingListRepository.RemoveShoppingList(shoppingList);
+            await _shoppingListRepository.RemoveShoppingList(shoppingList.ShoppingListId);
 
             return NoContent();
         }
