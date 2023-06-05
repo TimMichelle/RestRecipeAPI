@@ -51,9 +51,10 @@ namespace RestRecipeApp.Controllers
             shoppingListItem.IngredientId = updatedShoppingListItem.IngredientId;
             shoppingListItem.IsBought = updatedShoppingListItem.IsBought;
 
-            await _shoppingListItemRepository.UpdateShoppingListItem(shoppingListItem);
+            var updatedItem =  await _shoppingListItemRepository.UpdateShoppingListItem(shoppingListItem);
 
-            return NoContent();
+            return CreatedAtAction(nameof(GetShoppingListItemById), new { shoppingListId = updatedItem.ShoppingListItemId },
+                updatedItem);
         }
 
         // DELETE api/shoppinglistitem/{shoppingListId}/{itemId}
