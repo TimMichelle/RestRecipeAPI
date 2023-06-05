@@ -21,12 +21,9 @@ namespace RestRecipeApp.Controllers
         [HttpGet]
         public async Task<ActionResult<List<GetIngredientDto>>> GetIngredients()
         {
-            var result = await _ingredientRepository.GetIngredients();
-            return result.Right<ActionResult>(response =>
-            {
-                return Ok(
-                    response.Map(ingredient => ingredient.MapGetIngredientDto()));
-            }).Left(BadRequest);
+            var result = await _ingredientRepository.GetIngredients(null);
+
+            return Ok(result.Map(ingredient => ingredient.MapGetIngredientDto()));
         }
 
         // GET: api/Ingredient/5
@@ -69,6 +66,7 @@ namespace RestRecipeApp.Controllers
             {
                 return BadRequest($"Ingredient is not valid - {string.Join(", ", validatedResult.Errors)}");
             }
+
             var createdIngredientOrError = await _ingredientRepository.CreateIngredient(ingredient);
             return createdIngredientOrError
                 .Right<ActionResult>(createdIngredient =>

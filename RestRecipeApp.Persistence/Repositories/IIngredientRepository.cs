@@ -7,7 +7,7 @@ namespace RestRecipeApp.Persistence.Repositories;
 public interface IIngredientRepository
 {
     public Task<Either<DbError, Ingredient>> GetIngredientById(int id);
-    public Task<Either<DbError, List<Ingredient>>> GetIngredients();
+    public Task<IEnumerable<Ingredient>> GetIngredients(int? recipeId);
     public Task<bool> RemoveIngredient(int id);
     public Task<Either<DbError, Ingredient>> CreateIngredient(CreateIngredientDto ingredient);
     public Task<Either<DbError, Ingredient>> UpdateIngredient(UpdatedIngredientDto updatedIngredientDto);

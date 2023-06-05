@@ -30,9 +30,10 @@ public class IngredientRepository : IIngredientRepository
         }
     }
 
-    public async Task<Either<DbError, List<Ingredient>>> GetIngredients()
+    public async Task<IEnumerable<Ingredient>> GetIngredients(int? recipeId = null)
     {
-        return await _recipesContext.Ingredients.Include(i => i.Product).ToListAsync();
+        return await _recipesContext.Ingredients.Include(i => i.Product)
+            .Where(x => recipeId == null || x.RecipeId == recipeId).ToListAsync();
     }
 
     public async Task<bool> RemoveIngredient(int id)
