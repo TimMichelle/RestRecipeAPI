@@ -17,9 +17,14 @@ public class ShoppingListRepository : IShoppingListRepository
 
     public async Task<ShoppingList?> GetShoppingListById(int id)
     {
-        return await _context.ShoppingLists
-            .Include(sl => sl.Items)
+        // Todo return ingredient object in items
+        var shoppingList =  await _context.ShoppingLists
             .FirstOrDefaultAsync(sl => sl.ShoppingListId == id);
+        if (shoppingList == null)
+        {
+            return null;
+        }
+        var items = await _context.ShoppingListItems.FromSqlRaw()
     }
 
     public async Task<List<ShoppingList>> GetAll()
