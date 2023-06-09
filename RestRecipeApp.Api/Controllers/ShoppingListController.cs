@@ -39,7 +39,7 @@ namespace RestRecipeApp.Controllers
 
         // POST api/shoppinglist
         [HttpPost]
-        public async Task<ActionResult<ShoppingList>> CreateShoppingList([BindRequired, FromBody] int recipeId)
+        public async Task<ActionResult<ShoppingList>> CreateShoppingList([BindRequired, FromBody] CreateShoppingListDto recipeId)
         {
             var createdShoppingList
                 = await _shoppingListRepository.CreateShoppingList(recipeId);
