@@ -7,5 +7,6 @@ public class ShoppingList
 {
     public int ShoppingListId{ get; set; }
     public int RecipeId { get; set; }
+    public Recipe Recipe { get; set; }
     public IEnumerable<ShoppingListItem> Items { get; set; }
 }

@@ -18,6 +18,7 @@ public class ShoppingListRepository : IShoppingListRepository
     {
         var shoppingList = await _context.ShoppingLists
             .Include(sl => sl.Items)
+            .Include(sl => sl.Recipe)
             .FirstOrDefaultAsync(sl => sl.ShoppingListId == id);
 
         if (shoppingList == null)
@@ -31,6 +32,7 @@ public class ShoppingListRepository : IShoppingListRepository
         {
             ShoppingListId = shoppingList.ShoppingListId,
             RecipeId = shoppingList.RecipeId,
+            RecipeName = shoppingList.Recipe.Name,
             Items = items
         };
     }
