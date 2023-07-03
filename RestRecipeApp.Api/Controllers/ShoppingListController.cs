@@ -24,6 +24,17 @@ namespace RestRecipeApp.Controllers
             var shoppingLists = await _shoppingListRepository.GetAll();
             return Ok(shoppingLists);
         }
+        // GET api/shoppinglistitem/{shoppingListId}
+        [HttpGet("recipe/{recipeId}")]
+        public async Task<ActionResult<ShoppingListItem>> GetShoppingListsForRecipe(int recipeId)
+        {
+            var shoppingListItems = await _shoppingListRepository.GetShoppingListsForRecipe(recipeId);
+
+            if (shoppingListItems == null)
+                return NotFound();
+
+            return Ok(shoppingListItems);
+        }
 
         // GET api/shoppinglist/{id}
         [HttpGet("{id}")]
