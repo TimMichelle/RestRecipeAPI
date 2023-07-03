@@ -39,11 +39,13 @@ namespace RestRecipeApp.Controllers
             return Ok(shoppingListItems);
         }
 
-        // PUT api/shoppinglistitem/{shoppingListId}/{itemId}
-        [HttpPut("{shoppingListId}/{itemId}")]
-        public async Task<IActionResult> UpdateShoppingListItem(int shoppingListId, int itemId, ShoppingListItem updatedShoppingListItem)
+
+
+        // PUT api/shoppinglistitem/{shoppingListId}/{shoppingListItemId}
+        [HttpPut("{shoppingListId}/{shoppingListItemId}")]
+        public async Task<IActionResult> UpdateShoppingListItem(int shoppingListId, int shoppingListItemId, ShoppingListItem updatedShoppingListItem)
         {
-            var shoppingListItem = await _shoppingListItemRepository.GetShoppingListItemByListId(itemId);
+            var shoppingListItem = await _shoppingListItemRepository.GetShoppingListItemByListId(shoppingListItemId);
 
             if (shoppingListItem == null)
                 return NotFound();
@@ -57,11 +59,11 @@ namespace RestRecipeApp.Controllers
                 updatedItem);
         }
 
-        // DELETE api/shoppinglistitem/{shoppingListId}/{itemId}
-        [HttpDelete("{shoppingListId}/{itemId}")]
-        public async Task<IActionResult> DeleteShoppingListItem(int shoppingListId, int itemId)
+        // DELETE api/shoppinglistitem/{shoppingListId}/{shoppingListItemId}
+        [HttpDelete("{shoppingListId}/{shoppingListItemId}")]
+        public async Task<IActionResult> DeleteShoppingListItem(int shoppingListId, int shoppingListItemId)
         {
-            var shoppingListItem = await _shoppingListItemRepository.GetShoppingListItemByListId(itemId);
+            var shoppingListItem = await _shoppingListItemRepository.GetShoppingListItemByListId(shoppingListItemId);
 
             if (shoppingListItem == null)
                 return NotFound();

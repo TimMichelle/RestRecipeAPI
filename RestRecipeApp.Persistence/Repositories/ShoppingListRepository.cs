@@ -37,6 +37,31 @@ public class ShoppingListRepository : IShoppingListRepository
         };
     }
 
+    public async Task<IEnumerable<GetShoppingList>> GetShoppingListsForRecipe(int recipeId)
+    {
+        var shoppingLists = await _context.ShoppingLists
+            .Include(sl => sl.Items)
+            .Include(sl => sl.Recipe)
+            .Where(list => list.RecipeId == recipeId).ToListAsync();
+
+        if (!shoppingLists.Any())
+        {
+            return null;
+        }
+
+        return shoppingLists.Select(x =>
+        {
+            var items = GetShoppingListItems(x);
+            return new GetShoppingList
+            {
+                ShoppingListId = x.ShoppingListId,
+                RecipeId = x.RecipeId,
+                RecipeName = x.Recipe.Name,
+                Items = items
+            };
+        });
+    }
+
 
     public async Task<List<GetShoppingList>> GetAll()
     {
