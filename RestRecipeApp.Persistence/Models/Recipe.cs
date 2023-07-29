@@ -9,4 +9,5 @@ public class Recipe
     public int TotalPersons { get; set; }
     public List<Ingredient> Ingredients { get; set; } = new();
     public List<RecipeStep> Steps { get; set; } = new();
+    public Image? Image { get; set; }
 }
