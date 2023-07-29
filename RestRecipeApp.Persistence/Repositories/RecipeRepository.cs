@@ -117,4 +117,31 @@ public class RecipeRepository: IRecipeRepository
 
         return currentRecipe;
     }
+
+    public async Task<Image?> CreateImageForRecipe(int recipeId, CreateRecipeImageDto createRecipeImageDto)
+    {
+        Image image;
+        using var memoryStream = new MemoryStream();
+        await createRecipeImageDto.File.CopyToAsync(memoryStream);
+
+        // Upload the file if less than 2 MB
+        if (memoryStream.Length < 2097152)
+        {
+            var file = new Image()
+            {
+                Name = createRecipeImageDto.Name,
+                Content = memoryStream.ToArray()
+            };
+
+            image = file;
+             await _recipesContext.Images.AddAsync(file);
+            await _recipesContext.SaveChangesAsync();
+        }
+        else
+        {
+            throw new Exception("Files too large");
+        }
+
+        return image;
+    }
 }

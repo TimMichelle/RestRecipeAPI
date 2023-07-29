@@ -54,6 +54,22 @@ namespace RestRecipeApp.Controllers
                 .Left(error => BadRequest(error.Message));
         }
 
+        [HttpPost("{id}/upload-image")]
+        public async Task<GetImageDto?> UploadImage(int id, [FromForm] CreateRecipeImageDto createRecipeImageDto)
+        {
+            var image = await _repository.CreateImageForRecipe(id, createRecipeImageDto);
+            if (image == null)
+            {
+                return null;
+            }
+
+            return new GetImageDto()
+            {
+                Name = image.Name,
+                ImageBase64 = String.Format("data:image/png;base64,{0}", Convert.ToBase64String(image.Content))
+            };
+        }
+
 
         // POST: api/Recipe
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
