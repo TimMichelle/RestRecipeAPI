@@ -136,8 +136,20 @@ public class RecipeRepository: IRecipeRepository
             };
 
             image = file;
-             await _recipesContext.Images.AddAsync(file);
-            await _recipesContext.SaveChangesAsync();
+            var currentRecipe = await _recipesContext.Recipes
+                .Include(r => r.Image).FirstOrDefaultAsync(foundRecipe => foundRecipe.RecipeId == recipeId);
+            currentRecipe.Image = image;
+            
+            _recipesContext.Entry(currentRecipe).State = EntityState.Modified;
+            try
+            {
+                await _recipesContext.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException error)
+            {
+                return null;
+            }
+
         }
         else
         {
@@ -152,8 +164,8 @@ public class RecipeRepository: IRecipeRepository
         var recipeSome = _recipesContext.Recipes.Find(recipe => recipe.RecipeId == id);
         return recipeSome.Some<Image?>((recipe) =>
         {
-            var image = _recipesContext.Images.Find(image => image.ImageId == recipe.Image.ImageId);
-            return image.Some((x) => { return x; }).None(() => (Image)null);
+            var image = _recipesContext.Images.Find(image => recipe.Image != null && image.ImageId == recipe.Image.ImageId);
+            return image.Some((x) => { return x; }).None(() => null);
         }).None(() => null);
     }
 }

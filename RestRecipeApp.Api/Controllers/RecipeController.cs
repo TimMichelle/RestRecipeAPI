@@ -55,14 +55,14 @@ namespace RestRecipeApp.Controllers
                 .Left(error => BadRequest(error.Message));
         }
 
-        [HttpPost("{id}/image")]
+        [HttpPost("{id}/Image")]
         public async Task<GetImageDto?> UploadImage(int id, [FromForm] CreateRecipeImageDto createRecipeImageDto)
         {
             var image = await _repository.CreateImageForRecipe(id, createRecipeImageDto);
             return image.MapImageToGetImageDto();
         }
 
-        [HttpGet("{id}/image")]
+        [HttpGet("{id}/Image")]
         public async Task<GetImageDto?> GetImageOfRecipe(int id)
         {
             var image = await _repository.GetImageOfRecipe(id);
