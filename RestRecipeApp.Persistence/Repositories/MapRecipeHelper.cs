@@ -15,10 +15,10 @@ public static class MapRecipeHelper
             recipe.TotalPersons,
             recipe.Ingredients.Map(ingredient =>
                 ingredient.MapGetIngredientDto()).ToList(),
-            recipe.Steps.Map(step => step.MapGetRecipeStepDto()).OrderBy(x => x.StepNumber).ToList());
+            recipe.Steps.Map(step => step.MapGetRecipeStepDto()).OrderBy(x => x.StepNumber).ToList(),
+            recipe.Image.MapImageToGetImageDto());
     }
 
-   
 
     public static GetIngredientDto MapGetIngredientDto(this Ingredient ingredient)
     {
@@ -38,12 +38,11 @@ public static class MapRecipeHelper
     {
         return new GetRecipeStepDto(step.RecipeStepId, step.StepNumber, step.Description);
     }
-    
+
     public static Ingredient MapIngredient(this CreateIngredientDto ingredient)
     {
-        var newIngredient =  new Ingredient()
+        var newIngredient = new Ingredient()
         {
-            
             UnitOfMeasurement = ingredient.UnitOfMeasurement,
             Amount = ingredient.Amount,
             Product = ingredient.Product.MapProduct()
@@ -63,10 +62,10 @@ public static class MapRecipeHelper
             Name = product.Name
         };
     }
-    
+
     public static RecipeStep MapRecipeStep(this CreateRecipeStepDto recipeStep)
     {
-        var newRecipeStep =  new RecipeStep()
+        var newRecipeStep = new RecipeStep()
         {
             StepNumber = recipeStep.StepNumber,
             Description = recipeStep.Description
@@ -77,5 +76,19 @@ public static class MapRecipeHelper
         }
 
         return newRecipeStep;
+    }
+
+    public static GetImageDto? MapImageToGetImageDto(this Image? image)
+    {
+        if (image == null)
+        {
+            return null;
+        }
+
+        return new GetImageDto()
+        {
+            Name = image.Name,
+            ImageBase64 = $"data:image/png;base64,{Convert.ToBase64String(image.Content)}"
+        };
     }
 }

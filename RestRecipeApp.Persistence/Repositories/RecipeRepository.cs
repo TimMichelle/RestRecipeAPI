@@ -18,6 +18,7 @@ public class RecipeRepository: IRecipeRepository
         try
         {
             return await _recipesContext.Recipes.Include(r => r.Steps)
+                .Include(r => r.Image)
                 .Include(r => r.Ingredients)
                 .ThenInclude(i => i.Product)
                 .Where(foundRecipe => foundRecipe.RecipeId == id).FirstAsync();
@@ -35,6 +36,7 @@ public class RecipeRepository: IRecipeRepository
         {
             return await _recipesContext.Recipes.
                 Include(r => r.Steps)
+                .Include(r => r.Image)
                 .Include(r => r.Ingredients)
                 .ThenInclude(i => i.Product)
                 .ToListAsync();
@@ -116,5 +118,54 @@ public class RecipeRepository: IRecipeRepository
         }
 
         return currentRecipe;
+    }
+
+    public async Task<Image?> CreateImageForRecipe(int recipeId, CreateRecipeImageDto createRecipeImageDto)
+    {
+        Image image;
+        using var memoryStream = new MemoryStream();
+        await createRecipeImageDto.File.CopyToAsync(memoryStream);
+
+        // Upload the file if less than 2 MB
+        if (memoryStream.Length < 2097152)
+        {
+            var file = new Image()
+            {
+                Name = createRecipeImageDto.Name,
+                Content = memoryStream.ToArray()
+            };
+
+            image = file;
+            var currentRecipe = await _recipesContext.Recipes
+                .Include(r => r.Image).FirstOrDefaultAsync(foundRecipe => foundRecipe.RecipeId == recipeId);
+            currentRecipe.Image = image;
+            
+            _recipesContext.Entry(currentRecipe).State = EntityState.Modified;
+            try
+            {
+                await _recipesContext.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException error)
+            {
+                return null;
+            }
+
+        }
+        else
+        {
+            throw new Exception("Files too large");
+        }
+
+        return image;
+    }
+
+    public async Task<Image?> GetImageOfRecipe(int id)
+    {
+        var recipeSome = _recipesContext.Recipes.Find(recipe => recipe.RecipeId == id);
+        return recipeSome.Some<Image?>((recipe) =>
+        {
+            var image = _recipesContext.Images.Find(image => recipe.Image != null && image.ImageId == recipe.Image.ImageId);
+            return image.Some((x) => { return x; }).None(() => null);
+        }).None(() => null);
     }
 }
