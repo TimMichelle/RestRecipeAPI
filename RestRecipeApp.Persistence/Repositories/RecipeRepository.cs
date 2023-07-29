@@ -18,6 +18,7 @@ public class RecipeRepository: IRecipeRepository
         try
         {
             return await _recipesContext.Recipes.Include(r => r.Steps)
+                .Include(r => r.Image)
                 .Include(r => r.Ingredients)
                 .ThenInclude(i => i.Product)
                 .Where(foundRecipe => foundRecipe.RecipeId == id).FirstAsync();
@@ -35,6 +36,7 @@ public class RecipeRepository: IRecipeRepository
         {
             return await _recipesContext.Recipes.
                 Include(r => r.Steps)
+                .Include(r => r.Image)
                 .Include(r => r.Ingredients)
                 .ThenInclude(i => i.Product)
                 .ToListAsync();
@@ -143,5 +145,15 @@ public class RecipeRepository: IRecipeRepository
         }
 
         return image;
+    }
+
+    public async Task<Image?> GetImageOfRecipe(int id)
+    {
+        var recipeSome = _recipesContext.Recipes.Find(recipe => recipe.RecipeId == id);
+        return recipeSome.Some<Image?>((recipe) =>
+        {
+            var image = _recipesContext.Images.Find(image => image.ImageId == recipe.Image.ImageId);
+            return image.Some((x) => { return x; }).None(() => (Image)null);
+        }).None(() => null);
     }
 }

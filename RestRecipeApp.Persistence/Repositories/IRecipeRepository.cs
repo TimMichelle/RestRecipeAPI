@@ -12,4 +12,5 @@ public interface IRecipeRepository
     public Task<Either<DbError, Recipe>> CreateRecipe(CreateRecipeDto recipe);
     public Task<Either<DbError, Recipe>> UpdateRecipe(UpdatedRecipeDto updatedRecipeDto); 
     public Task<Image?> CreateImageForRecipe(int recipeId, CreateRecipeImageDto createRecipeImageDto);
+    Task<Image?> GetImageOfRecipe(int id);
 }

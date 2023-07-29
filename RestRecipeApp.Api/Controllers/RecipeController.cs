@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using RestRecipeApp.Core.ResponseDto;
 using RestRecipeApp.Persistence.Repositories;
 using RestRecipeApp.Core.RequestDto;
+using RestRecipeApp.Persistence.Models;
 
 namespace RestRecipeApp.Controllers
 {
@@ -54,21 +55,20 @@ namespace RestRecipeApp.Controllers
                 .Left(error => BadRequest(error.Message));
         }
 
-        [HttpPost("{id}/upload-image")]
+        [HttpPost("{id}/image")]
         public async Task<GetImageDto?> UploadImage(int id, [FromForm] CreateRecipeImageDto createRecipeImageDto)
         {
             var image = await _repository.CreateImageForRecipe(id, createRecipeImageDto);
-            if (image == null)
-            {
-                return null;
-            }
-
-            return new GetImageDto()
-            {
-                Name = image.Name,
-                ImageBase64 = String.Format("data:image/png;base64,{0}", Convert.ToBase64String(image.Content))
-            };
+            return image.MapImageToGetImageDto();
         }
+
+        [HttpGet("{id}/image")]
+        public async Task<GetImageDto?> GetImageOfRecipe(int id)
+        {
+            var image = await _repository.GetImageOfRecipe(id);
+            return image.MapImageToGetImageDto();
+        }
+       
 
 
         // POST: api/Recipe

@@ -6,4 +6,5 @@ public record GetRecipeDto(
     int CookingTime,
     int TotalPersons,
     List<GetIngredientDto> Ingredients,
-    List<GetRecipeStepDto> Steps);
+    List<GetRecipeStepDto> Steps,
+    GetImageDto? image);
