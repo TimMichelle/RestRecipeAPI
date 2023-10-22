@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestRecipeApp.Core.ResponseDto;
 using RestRecipeApp.Persistence.Repositories;
@@ -8,6 +9,7 @@ namespace RestRecipeApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class RecipeController : ControllerBase
     {
         private readonly IRecipeRepository _repository;

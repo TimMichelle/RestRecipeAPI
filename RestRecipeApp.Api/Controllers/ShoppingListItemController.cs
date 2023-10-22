@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestRecipeApp.Persistence.Models;
 using RestRecipeApp.Persistence.Repositories;
@@ -6,6 +7,7 @@ namespace RestRecipeApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ShoppingListItemController : ControllerBase
     {
         private readonly IShoppingListItemRepository _shoppingListItemRepository;
